@@ -531,8 +531,8 @@ def findPath(start, end):
 def isValid(c,open_set,closed_set):
     global tabla
     if( c not in open_set and c not in closed_set):
-        #if(tabla[c[0]][c[1]]=="===" or tabla[c[0]][c[1]]==" ǁ "):
-            #return False
+        if(tabla[c[0]-1][c[1]]=="===" or tabla[c[0]][c[1]-1]==" ǁ "):
+            return False
         return True
     
        
@@ -548,15 +548,17 @@ def checkWall():
     for key in pozicije.keys():
             lista.append(key)
     for l in lista:
-        print(findPath(l,x1))
-        print(findPath(l,x2))
-        print(findPath(l,o1))
-        print(findPath(l,o2))
+        print(findPath((pozicije[l][0],pozicije[l][1]),x1))
+        print(findPath((pozicije[l][0],pozicije[l][1]),x2))
+        print(findPath((pozicije[l][0],pozicije[l][1]),o1))
+        print(findPath((pozicije[l][0],pozicije[l][1]),o2))
 
 n=22
 m=28
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
+tabla[7][6] = "==="
+#update()
 checkWall()
 #print(tabla[6][4])
 #print(findPath((8, 4), (8, 16)))
