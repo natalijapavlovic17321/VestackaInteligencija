@@ -509,7 +509,8 @@ def findPath(start, end):
                     g[c] = g[node] + 1
                     pq.put((f,c))
                 else:
-                    if g[c] > g[node] + 1:
+                    continue
+                    '''if g[c] > g[node] + 1:
                         g[c] = g[node] + 1
                         prev_nodes[c] = node
                         if c in closed_set:
@@ -517,7 +518,7 @@ def findPath(start, end):
                             open_set.add(c)
                         pq.put((f,c))
         open_set.remove(node)
-        closed_set.add(node)
+        closed_set.add(node)'''
         
     path = []
     if found_end:
@@ -531,7 +532,27 @@ def findPath(start, end):
 def isValid(c,open_set,closed_set):
     global tabla
     if( c not in open_set and c not in closed_set):
-        if(tabla[c[0]-1][c[1]]=="===" or tabla[c[0]][c[1]-1]==" ǁ "):
+        if((tabla[c[0]-1][c[1]]=="===" or tabla[c[0]][c[1]-1]==" ǁ ")
+           or (tabla[c[0]-3][c[1]]=="===" or tabla[c[0]-1][c[1]]=="===" ) # u
+           or (tabla[c[0]+3][c[1]]=="===" or tabla[c[0]+1][c[1]]=="===") # d
+           or (tabla[c[0]][c[1]-3]==" ǁ " or tabla[c[0]][c[1]-1]==" ǁ ") # l
+           or (tabla[c[0]][c[1]+3]==" ǁ " or tabla[c[0]][c[1]+1]==" ǁ ") # r
+           or ((tabla[c[0]-1][c[1]]=="===" and tabla[c[0]-1][c[1]+2]=="===")
+            or (tabla[c[0]-2][c[1]+1]==" ǁ " and tabla[c[0]][c[1]+1]==" ǁ ")
+            or (tabla[c[0]-1][c[1]+2]=="===" and tabla[c[0]-2][c[1]+1]==" ǁ ")
+            or (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]][c[1]+1]==" ǁ ")) # ur
+            or ((tabla[c[0]-1][c[1]-2]=="===" and tabla[c[0]-1][c[1]]=="===")
+            or (tabla[c[0]][c[1]-1]==" ǁ " and tabla[c[0]-2][c[1]-1]==" ǁ ")
+            or (tabla[c[0]-1][c[1]-2]=="===" and tabla[c[0]-2][c[1]-1]==" ǁ ")
+            or (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]][c[1]-1]==" ǁ ")) # ul
+            or ((tabla[c[0]+1][c[1]]=="===" and tabla[c[0]+1][c[1]+2]=="===" )
+            or (tabla[c[0]][c[1]+1]==" ǁ " and tabla[c[0]+2][c[1]+1]==" ǁ " )
+            or (tabla[c[0]+1][c[1]+2]=="===" and tabla[c[0]+2][c[1]+1]==" ǁ ")
+            or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]][c[1]+1]==" ǁ ")) # dr
+            or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]+1][c[1]-2]=="===" )
+            or (tabla[c[0]][c[1]-1]==" ǁ " and tabla[c[0]+2][c[1]-1]==" ǁ " )
+            or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]][c[1]-1]==" ǁ ") 
+            or (tabla[c[0]+1][c[1]-2]=="===" and tabla[c[0]+2][c[1]-1]==" ǁ ")): # dl
             return False
         return True
     
@@ -558,7 +579,10 @@ m=28
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 tabla[7][6] = "==="
-#update()
+tabla[7][8] = "==="
+tabla[6][5] = " ǁ "
+tabla[4][5] = " ǁ "
+update() 
 checkWall()
 #print(tabla[6][4])
 #print(findPath((8, 4), (8, 16)))
