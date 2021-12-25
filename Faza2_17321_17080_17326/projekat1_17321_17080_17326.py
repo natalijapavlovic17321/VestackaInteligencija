@@ -16,6 +16,7 @@ pozicije={}
 cijiPotez="x"
 xZidovi=0
 oZidovi=0
+listaStates=list()
 def Tabla(n, m ,p1,p2,p3,p4):
     tabla = [ [" "  for i in range(m)] for j in range(n) ]
     '''for i in range(n-1):
@@ -28,7 +29,7 @@ def Tabla(n, m ,p1,p2,p3,p4):
                 tabla[i][j]="___"
             if j%2==1 and i%2==0:
                 tabla[i][j]=" | "'''
-    for i in range(n):
+    for i in range(n-1):
         for j in range(m):
             if(j<m-1):
                 if(i%2==0 and j%2==0):
@@ -494,11 +495,13 @@ def game():
     update()
     while (not endGame()):
         print("Korisnik " + cijiPotez +" je na potezu")
-        zid()
-        update()
+        #zid()
+        #update()
         while(not moved):
             move()
         moved=False
+        update()
+        zid()
         update()
 def main():
     game()
