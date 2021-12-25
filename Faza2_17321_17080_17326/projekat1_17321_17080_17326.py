@@ -18,7 +18,7 @@ xZidovi=0
 oZidovi=0
 def Tabla(n, m ,p1,p2,p3,p4):
     tabla = [ [" "  for i in range(m)] for j in range(n) ]
-    for i in range(n-1):
+    '''for i in range(n-1):
         for j in range(m-1):
             if(i%2==0 and j%2==0):
                 tabla[i][j]="   "
@@ -27,7 +27,21 @@ def Tabla(n, m ,p1,p2,p3,p4):
             if i%2==1 and j%2==0:
                 tabla[i][j]="___"
             if j%2==1 and i%2==0:
-                tabla[i][j]=" | "
+                tabla[i][j]=" | "'''
+    for i in range(n):
+        for j in range(m):
+            if(j<m-1):
+                if(i%2==0 and j%2==0):
+                    tabla[i][j]="   "
+                elif i%2==1 and j%2==1:
+                    tabla[i][j]="   "
+                if i%2==1 and j%2==0:
+                    tabla[i][j]="___"
+                if j%2==1 and i%2==0:
+                    tabla[i][j]=" | "
+            else: 
+                if(i%2==0):
+                    tabla[i][j]= int(i/2)+1
  
     tabla[p1[0]][p1[1]]=" X "
     tabla[p2[0]][p2[1]]=" X "
@@ -286,34 +300,34 @@ def move():
                 print("Unesite figuru (px1, px2, po1, po2) i smer pomeranja figure (u, d, l, r, ur, ul, dr, dl)")
                 p, where = input().split()
         pom=pozicije[p]
-        if (where=="u" and  (pom[0]==0 or pom[0]==1 or tabla[pom[0]-3][pom[1]]=="===" or tabla[pom[0]-1][pom[1]]=="===" )):
+        if (where=="u" and  (pom[0]==0 or pom[0]==2 or pom[0]==1 or tabla[pom[0]-3][pom[1]]=="===" or tabla[pom[0]-1][pom[1]]=="===" )):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
         elif(where=="d" and  (pom[0]==n-2 or pom[0]==n-4 or tabla[pom[0]+3][pom[1]]=="===" or tabla[pom[0]+1][pom[1]]=="===" )):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
-        elif (where=="l" and  (pom[1]==0 or pom[1]==1 or tabla[pom[0]][pom[1]-3]==" ǁ " or tabla[pom[0]][pom[1]-1]==" ǁ " )):
+        elif (where=="l" and  (pom[1]==0 or pom[1]==1 or pom[1]==2 or tabla[pom[0]][pom[1]-3]==" ǁ " or tabla[pom[0]][pom[1]-1]==" ǁ " )):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
         elif (where=="r" and  (pom[1]==m-2 or pom[1]==m-4 or tabla[pom[0]][pom[1]+3]==" ǁ " or tabla[pom[0]][pom[1]+1]==" ǁ " )):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
-        elif (where=="ur" and  ((pom[0]==0 or pom[0]==1) or (pom[1]==m-2 or pom[1]==m-4) 
+        elif (where=="ur" and  ((pom[0]==0) or (pom[1]==m-2 or pom[1]==m-4) 
                     or (tabla[pom[0]-1][pom[1]]=="===" and tabla[pom[0]-1][pom[1]+2]=="===")
                     or (tabla[pom[0]-2][pom[1]+1]==" ǁ " and tabla[pom[0]][pom[1]+1]==" ǁ ")
                     or (tabla[pom[0]-1][pom[1]+2]=="===" and tabla[pom[0]-2][pom[1]+1]==" ǁ ")
                     or (tabla[pom[0]-1][pom[1]]=="===" and tabla[pom[0]][pom[1]+1]==" ǁ ")
                     )):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
-        elif (where=="ul" and  ((pom[0]==0 or pom[0]==1) or (pom[1]==0 or pom[1]==1)
+        elif (where=="ul" and  ((pom[0]==0 ) or (pom[1]==0 or pom[1]==1)
                     or (tabla[pom[0]-1][pom[1]-2]=="===" and tabla[pom[0]-1][pom[1]]=="===")
                     or (tabla[pom[0]][pom[1]-1]==" ǁ " and tabla[pom[0]-2][pom[1]-1]==" ǁ ")
                     or (tabla[pom[0]-1][pom[1]-2]=="===" and tabla[pom[0]-2][pom[1]-1]==" ǁ ")
                     or (tabla[pom[0]-1][pom[1]]=="===" and tabla[pom[0]][pom[1]-1]==" ǁ "))):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
-        elif(where=="dr" and  ((pom[0]==n-2 or pom[0]==n-4 ) or(pom[1]==m-2 or pom[1]==m-4)
+        elif(where=="dr" and  ((pom[0]==n-2  ) or(pom[1]==m-2 or pom[1]==m-4)
                     or (tabla[pom[0]+1][pom[1]]=="===" and tabla[pom[0]+1][pom[1]+2]=="===" )
                     or (tabla[pom[0]][pom[1]+1]==" ǁ " and tabla[pom[0]+2][pom[1]+1]==" ǁ " )
                     or (tabla[pom[0]+1][pom[1]+2]=="===" and tabla[pom[0]+2][pom[1]+1]==" ǁ ")
                     or (tabla[pom[0]+1][pom[1]]=="===" and tabla[pom[0]][pom[1]+1]==" ǁ "))):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
-        elif(where=="dl" and  ((pom[0]==n-2 or pom[0]==n-4 ) or (pom[1]==0 or pom[1]==1)
+        elif(where=="dl" and  ((pom[0]==n-2 ) or (pom[1]==0 or pom[1]==1)
                     or (tabla[pom[0]+1][pom[1]]=="===" and tabla[pom[0]+1][pom[1]-2]=="===" )
                     or (tabla[pom[0]][pom[1]-1]==" ǁ " and tabla[pom[0]+2][pom[1]-1]==" ǁ " )
                     or (tabla[pom[0]+1][pom[1]]=="===" and tabla[pom[0]][pom[1]-1]==" ǁ ")

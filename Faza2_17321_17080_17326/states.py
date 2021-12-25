@@ -80,40 +80,40 @@ def movingStates(koIgra,zid,vrstaZida):
     else:
         pomTabla[zid[0]-2][zid[1]-1] = " ǁ "
         pomTabla[zid[0]][zid[1]-1] = " ǁ "
-    if(pom[0]!=0 and pom[0]!=1 and pomTabla[pom[0]-3][pom[1]]!="===" and pomTabla[pom[0]-1][pom[1]]!="===" ): #u
+    if(pom[0]!=0 and pom[0]!=2 and pom[0]!=1 and pomTabla[pom[0]-3][pom[1]]!="===" and pomTabla[pom[0]-1][pom[1]]!="===" ): #u
         potez="u" #koji je potez
         listaStates.append(makeNewState(koIgra,zid,vrstaZida,potez)) 
     if(pom[0]!=n-2 and pom[0]!=n-4 and pomTabla[pom[0]+3][pom[1]]!="===" and pomTabla[pom[0]+1][pom[1]]!="===" ): #d
         potez="d"
         listaStates.append(makeNewState(koIgra,zid,vrstaZida,potez)) 
-    if(pom[1]!=0 and pom[1]!=1 and pomTabla[pom[0]][pom[1]-3]!=" ǁ " and pomTabla[pom[0]][pom[1]-1]!=" ǁ " ): #l
+    if(pom[1]!=0 and pom[1]!=2 and pom[1]!=1 and pomTabla[pom[0]][pom[1]-3]!=" ǁ " and pomTabla[pom[0]][pom[1]-1]!=" ǁ " ): #l
         potez="l"
         listaStates.append(makeNewState(koIgra,zid,vrstaZida,potez)) 
     if(pom[1]!=m-2 and pom[1]!=m-4 and pomTabla[pom[0]][pom[1]+3]!=" ǁ " and pomTabla[pom[0]][pom[1]+1]!=" ǁ " ): #r
         potez="r"
         listaStates.append(makeNewState(koIgra,zid,vrstaZida,potez)) 
-    if((pom[0]!=0 and pom[0]!=1) and (pom[1]!=m-2 and pom[1]!=m-4) 
+    if((pom[0]!=0) and (pom[1]!=m-2 and pom[1]!=m-4) 
                     and (pomTabla[pom[0]-1][pom[1]]!="===" or pomTabla[pom[0]-1][pom[1]+2]!="===")
                     and (pomTabla[pom[0]-2][pom[1]+1]!=" ǁ " or pomTabla[pom[0]][pom[1]+1]!=" ǁ ")
                     and (pomTabla[pom[0]-1][pom[1]+2]!="===" or pomTabla[pom[0]-2][pom[1]+1]!=" ǁ ")
                     and (pomTabla[pom[0]-1][pom[1]]!="===" or pomTabla[pom[0]][pom[1]+1]!=" ǁ ")): #ur
         potez="ur"
         listaStates.append(makeNewState(koIgra,zid,vrstaZida,potez)) 
-    if((pom[0]!=0 and pom[0]!=1) and (pom[1]!=0 and pom[1]!=1)
+    if((pom[0]!=0) and (pom[1]!=0 and pom[1]!=1)
                     and (pomTabla[pom[0]-1][pom[1]-2]!="===" or pomTabla[pom[0]-1][pom[1]]!="===")
                     and (pomTabla[pom[0]][pom[1]-1]!=" ǁ " or pomTabla[pom[0]-2][pom[1]-1]!=" ǁ ")
                     and (pomTabla[pom[0]-1][pom[1]-2]!="===" or pomTabla[pom[0]-2][pom[1]-1]!=" ǁ ")
                     and (pomTabla[pom[0]-1][pom[1]]!="===" or pomTabla[pom[0]][pom[1]-1]!=" ǁ ")): #ul
         potez="ul"
         listaStates.append(makeNewState(koIgra,zid,vrstaZida,potez)) 
-    if((pom[0]!=n-2 and pom[0]!=n-4 ) and(pom[1]!=m-2 and pom[1]!=m-4)
+    if((pom[0]!=n-2) and(pom[1]!=m-2 and pom[1]!=m-4)
                     and (pomTabla[pom[0]+1][pom[1]]!="===" or pomTabla[pom[0]+1][pom[1]+2]!="===" )
                     and (pomTabla[pom[0]][pom[1]+1]!=" ǁ " or pomTabla[pom[0]+2][pom[1]+1]!=" ǁ " )
                     and (pomTabla[pom[0]+1][pom[1]+2]!="===" or pomTabla[pom[0]+2][pom[1]+1]!=" ǁ ")
                     and (pomTabla[pom[0]+1][pom[1]]!="===" or pomTabla[pom[0]][pom[1]+1]!=" ǁ ")): #dr
         potez="dr"
         listaStates.append(makeNewState(koIgra,zid,vrstaZida,potez)) 
-    if((pom[0]!=n-2 and pom[0]!=n-4 ) and (pom[1]!=0 and pom[1]!=1)
+    if((pom[0]!=n-2) and (pom[1]!=0 and pom[1]!=1)
                     and (pomTabla[pom[0]+1][pom[1]]!="===" or pomTabla[pom[0]+1][pom[1]-2]!="===" )
                     and (pomTabla[pom[0]][pom[1]-1]!=" ǁ " or pomTabla[pom[0]+2][pom[1]-1]!=" ǁ " )
                     and (pomTabla[pom[0]+1][pom[1]]!="===" or pomTabla[pom[0]][pom[1]-1]!=" ǁ ")
@@ -157,80 +157,60 @@ def makeNewState(koIgra,zid,vrstaZida,potez):
         p2=int(pom[0]-2) #skok za 1
         if([p1,pom[1]] in lista3):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]-=4      #da li ovo menja pozicije?
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]-4][pom[1]]=ispis
         elif((tablaDup[p1][pom[1]] in lista) or (tablaDup[p2][pom[0]] in lista2)):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]-=2
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]-2][pom[1]]=ispis
         else:
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]-=4  
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]-4][pom[1]]=ispis
     elif (potez=="d"):
         p1=int(pom[0]+4)
         p2=int(pom[0]+2)
         if([p1,pom[1]] in lista3):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]+=4
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]+4][pom[1]]=ispis
         elif((tablaDup[p1][pom[1]] in lista) or (tablaDup[p2][pom[0]] in lista2)):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]+=2
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]+2][pom[1]]=ispis
         else:
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]+=4
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]+4][pom[1]]=ispis
     elif (potez=="l"):
         p1=int(pom[1]-4)
         p2=int(pom[1]-2)
         if([pom[0],p1] in lista3):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[1]-=4
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]][pom[1]-4]=ispis
         elif((tablaDup[pom[0]][p1] in lista) or (tablaDup[pom[0]][p2] in lista2)):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[1]-=2
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]][pom[1]-2]=ispis
         else:
             tablaDup[pom[0]][pom[1]]="   "
-            pom[1]-=4   
-            tablaDup[pom[0]][pom[1]]=ispis     
+            tablaDup[pom[0]][pom[1]-4]=ispis     
     elif (potez=="r"):
         p1=int(pom[1]+4)
         p2=int(pom[1]+2)
         if([pom[0],p1] in lista3):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[1]+=4  
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]][pom[1]+4]=ispis
         elif((tablaDup[pom[0]][p1] in lista) or (tablaDup[pom[0]][p2] in lista2)):
             tabla[pom[0]][pom[1]]="   "
-            pom[1]+=2
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]][pom[1]+2]=ispis
         else:
             tablaDup[pom[0]][pom[1]]="   "
-            pom[1]+=4  
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]][pom[1]+4]=ispis
     elif (potez=="ur"):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]-=2  
-            pom[1]+=2  
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]-2][pom[1]+2]=ispis
     elif (potez=="ul"):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]-=2  
-            pom[1]-=2  
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]-2][pom[1]-2]=ispis
     elif (potez=="dr"):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]+=2  
-            pom[1]+=2  
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]+2][pom[1]+2]=ispis
     elif (potez=="dl"):
             tablaDup[pom[0]][pom[1]]="   "
-            pom[0]+=2  
-            pom[1]-=2 
-            tablaDup[pom[0]][pom[1]]=ispis
+            tablaDup[pom[0]+2][pom[1]-2]=ispis
     return tablaDup
 main()
