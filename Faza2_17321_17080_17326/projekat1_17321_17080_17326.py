@@ -318,7 +318,7 @@ def move():
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
         elif(where=="d" and  (pom[0]==n-2 or pom[0]==n-4 or tabla[pom[0]+3][pom[1]]=="===" or tabla[pom[0]+1][pom[1]]=="===" )):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
-        elif (where=="l" and  (pom[1]==0 or pom[1]==1 or pom[1]==2 or tabla[pom[0]][pom[1]-3]==" ǁ " or tabla[pom[0]][pom[1]-1]==" ǁ " )):
+        elif (where=="l" and  (pom[1]==0 or pom[1]==2 or pom[1]==2 or tabla[pom[0]][pom[1]-3]==" ǁ " or tabla[pom[0]][pom[1]-1]==" ǁ " )):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
         elif (where=="r" and  (pom[1]==m-2 or pom[1]==m-4 or tabla[pom[0]][pom[1]+3]==" ǁ " or tabla[pom[0]][pom[1]+1]==" ǁ " )):
                 print("Nije moguce pomeranje figure u tom smeru, promenite smer kretanja")
