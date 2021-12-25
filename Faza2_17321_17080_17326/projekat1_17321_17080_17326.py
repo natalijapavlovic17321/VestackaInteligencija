@@ -83,15 +83,16 @@ def inputT():
     global o2
     print("Unesite n da bude neparan broj. Ukoliko ne zelite unesite 0")
     n=(int)(input())
-    while (n%2 == 0 and n!=0) or (n<=11 and n>=22):
+    while (n%2 == 0 or n<11 or n>22) and n!=0:
         print("Unesite n da bude neparan broj. Ukoliko ne zelite unesite 0")
         n=(int)(input())
+        
     if(n == 0):
        n=11
     n=2*n
     print("Unesite m da bude paran broj. Ukoliko ne zelite unesite 0")
     m=(int)(input())
-    while (m%2!=0 and m!=0) or (m<=14 and m>=28):
+    while (m%2!=0 or m<14 or m>28) and m!=0:
         print("Unesite m da bude paran broj. Ukoliko ne zelite unesite 0")
         m=(int)((int)(input()))
     if(m == 0):
@@ -212,7 +213,12 @@ def plavi():
             y *= 2 
             
         tabla[x-1][y-2] = "==="
-        tabla[x-1][y] = "==="            
+        tabla[x-1][y] = "==="   
+        if(checkWall()==False):
+                tabla[x-1][y-2] = "___"
+                tabla[x-1][y] = "___"
+                print("Ne mozete tu postaviti zid, unesite neku drugu vrednost za vrstu i kolonu")                
+                plavi()         
     except ValueError:
             print("Nevalidan unos")
             plavi()    
@@ -235,6 +241,12 @@ def zeleni():
             
         tabla[x-2][y-1] = " ǁ "
         tabla[x][y-1] = " ǁ "
+        
+        if(checkWall()==False):
+                tabla[x-2][y-1] = " | "
+                tabla[x][y-1] = " | "
+                print("Ne mozete tu postaviti zid, unesite neku drugu vrednost za vrstu i kolonu")                
+                zeleni()       
     except ValueError:
         print("Nevalidan unos")
         zeleni()    
@@ -254,7 +266,7 @@ def zid():
         if (slovo == 'p'):
             print("Plavi zid:")
             plavi()
-            xZidovi -= 1
+            xZidovi -= 1        
         elif (slovo == 'z'):
             print("Zeleni zid:")
             zeleni()
@@ -272,6 +284,7 @@ def zid():
             print("Plavi zid:")
             plavi()
             oZidovi -= 1
+            print(checkWall())
         elif (slovo == 'z'):
             print("Zeleni zid:")
             zeleni()
@@ -490,11 +503,9 @@ def game():
     global moved
     inputT()
     tabla=Tabla(n,m,x1,x2,o1,o2)
-    
-    update()
     while (not endGame()):
         print("Korisnik " + cijiPotez +" je na potezu")
-        zid()
+        #zid()
         update()
         while(not moved):
             move()
@@ -535,21 +546,27 @@ def findPath(start, end):
             break
         for dx, dy in zip([-2, 2, 0, 0, -2, -2, 2, 2], [0, 0, -2, 2, 2, -2, 2, -2]):
             c = (node[0]+dx, node[1]+dy)
-            if c[0] >= 0 and c[1] >= 0 and c[0] <= n and c[1] <= m:
+            if c[0] >= 0 and c[1] >= 0 and c[0] <= n-1 and c[1] <= m-1 and isValid(c,open_set,closed_set,dx,dy):
                 f = g[node] + 1 + h(c)
-                #if c not in open_set and c not in closed_set:
-                if(isValid(c,open_set,closed_set)):
+                if c not in open_set and c not in closed_set:
+                #if(isValid(c,open_set,closed_set)):
                     open_set.add(c)
                     prev_nodes[c] = node
                     g[c] = g[node] + 1
                     pq.put((f,c))
                 else:
-                    if g[c] > g[node] + 1:
+                    '''prev_nodes[c] = node
+                    if c in closed_set:
+                        closed_set.remove(c)
+                        open_set.add(c)
+                    pq.put((f,c))'''
+                    #continue
+                    if g[c] > g[node] + 1 :
                         g[c] = g[node] + 1
                         prev_nodes[c] = node
                         if c in closed_set:
-                            closed_set.remove(c)
-                            open_set.add(c)
+                                closed_set.remove(c)
+                                open_set.add(c)
                         pq.put((f,c))
         open_set.remove(node)
         closed_set.add(node)
@@ -563,11 +580,73 @@ def findPath(start, end):
         path.append(start)
         path.reverse()
     return path
-def isValid(c,open_set,closed_set):
-    global tabla
-    if( c not in open_set and c not in closed_set):
-        if(tabla[c[0]-1][c[1]]=="===" or tabla[c[0]][c[1]-1]==" ǁ "):
+def isValid(c,open_set,closed_set,dx,dy):
+        global tabla
+        global n
+        global m
+        #if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
+         #   return False
+    #if( c not in open_set and c not in closed_set):
+        
+        if(( c[0]+1>n-1) and dx==2 and dy==0):
             return False
+        else:
+            if(tabla[c[0]+1][c[1]]=="===" and dx==-2 and dy==0): #u
+                return False
+            
+        if(( c[1]+1>m-1) and dx==0 and dy==2):
+            return False
+        else:
+            if(tabla[c[0]][c[1]+1]==" ǁ "and dx==0 and dy==-2):#l
+                    return False
+            
+        if(( c[0]-1<0 ) and (dx==-2 and dy==0)):
+            return False
+        else:
+            if(tabla[c[0]-1][c[1]]=="==="and dx==2 and dy==0): #d
+                return False
+                
+        if(( c[1]-1<0 ) and dx==0 and dy==-2):
+            return False
+        else:
+            if ( tabla[c[0]][c[1]-1]==" ǁ " and dx==0 and dy==2): # r
+                return False
+        if(dx==-2 and dy==2):
+            if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
+                return False
+            else:
+                if (dx==-2 and dy==2 and (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]+1][c[1]-2]=="===")
+                        or (tabla[c[0]+2][c[1]-1]==" ǁ " and tabla[c[0]][c[1]-1]==" ǁ ")
+                        or (tabla[c[0]+1][c[1]-2]=="===" and tabla[c[0]+2][c[1]-1]==" ǁ ")
+                        or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]][c[1]-1]==" ǁ ")): #ur
+                        return False   
+        if(dx==-2 and dy==-2):        
+            if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
+                return False
+            else:
+                if (dx==-2 and dy==-2 and (tabla[c[0]+1][c[1]+2]=="===" and tabla[c[0]+1][c[1]]=="===")
+                            or (tabla[c[0]][c[1]+1]==" ǁ " and tabla[c[0]+2][c[1]+1]==" ǁ ")
+                            or (tabla[c[0]+1][c[1]+2]=="===" and tabla[c[0]+2][c[1]+1]==" ǁ ")
+                            or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]][c[1]+1]==" ǁ ")): # ul
+                            return False
+        if(dx==+2 and dy==+2):
+            if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
+                return False
+            else:
+                if (dx==+2 and dy==+2 and (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]-1][c[1]-2]=="===" )
+                        or (tabla[c[0]][c[1]-1]==" ǁ " and tabla[c[0]-2][c[1]-1]==" ǁ " )
+                        or (tabla[c[0]-1][c[1]-2]=="===" and tabla[c[0]-2][c[1]-1]==" ǁ ")
+                        or (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]][c[1]-1]==" ǁ ")): # dr
+                        return False
+        if(dx==+2 and dy==-2):
+            if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
+                return False
+            else:
+                    if (dx==+2 and dy==-2 and (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]+1][c[1]-2]=="===" )
+                            or (tabla[c[0]][c[1]+1]==" ǁ " and tabla[c[0]-2][c[1]+1]==" ǁ " )
+                            or (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]][c[1]+1]==" ǁ ")
+                            or (tabla[c[0]-1][c[1]+2]=="===" and tabla[c[0]-2][c[1]+1]==" ǁ ")): # dl
+                            return False    
         return True
     
        
@@ -579,26 +658,38 @@ def checkWall():
     global x2
     global o1
     global o2
+    pom=True
     lista=[]
     for key in pozicije.keys():
             lista.append(key)
     for l in lista:
-        print(findPath((pozicije[l][0],pozicije[l][1]),x1))
-        print(findPath((pozicije[l][0],pozicije[l][1]),x2))
-        print(findPath((pozicije[l][0],pozicije[l][1]),o1))
-        print(findPath((pozicije[l][0],pozicije[l][1]),o2))
+        if(findPath((pozicije[l][0],pozicije[l][1]),x1)==[]):         
+            return False
+        if(findPath((pozicije[l][0],pozicije[l][1]),x2)==[]):
+            return False
+        if(findPath((pozicije[l][0],pozicije[l][1]),o1)==[]):
+            return False
+        if(findPath((pozicije[l][0],pozicije[l][1]),o2)==[]):
+            return False
+    return True
 
-n=22
+'''n=22
 m=28
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 tabla[7][6] = "==="
-#update()
-checkWall()
+tabla[5][6] = "==="
+tabla[6][5] = " ǁ "
+tabla[13][6] = "==="
+tabla[4][17] = " ǁ "
+tabla[6][17] = " ǁ "
+tabla[6][7] = " ǁ "
+update()
+checkWall()'''
 #print(tabla[6][4])
 #print(findPath((8, 4), (8, 16)))
 
-#main()
+main()
 
 
 
