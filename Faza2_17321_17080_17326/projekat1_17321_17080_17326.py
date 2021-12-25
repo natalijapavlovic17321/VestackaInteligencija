@@ -122,6 +122,27 @@ def Mirror():
     global o1
     global o2
     global pozicije
+    if(x1==(6,6)):
+        o1=(6,20)
+    else: 
+        pom1=int(((n-x1[0])-4))
+        pom2=int(((m-x1[1])-4))
+        o1=(pom1,pom2)
+    if(x2==(14,6)):
+        o2=(14,20)
+    else: 
+        pom3=int(((n-x2[0])-4))
+        pom4=int(((m-x2[1])-4))
+        o2=(pom3,pom4)
+    if(not player1):
+        pom=x1
+        x1=o1
+        o1=pom
+        pom=x2
+        x2=o2
+        o2=pom
+    '''if(x2==(14,6) and player1):
+        o2=(14,20)
     pom1=int(((n-x1[0])-4))
     pom2=int(((m-x1[1])-4))
     pom3=int(((n-x2[0])-4))
@@ -131,7 +152,7 @@ def Mirror():
         o2=(pom3,pom4)
     else:
         x1=(pom1,pom2)
-        x2=(pom3,pom4)
+        x2=(pom3,pom4)'''
     px1i=[x1[0],x1[1]]
     px2i=[x2[0],x2[1]]
     po1i=[o1[0],o1[1]]
@@ -509,8 +530,7 @@ def findPath(start, end):
                     g[c] = g[node] + 1
                     pq.put((f,c))
                 else:
-                    continue
-                    '''if g[c] > g[node] + 1:
+                    if g[c] > g[node] + 1:
                         g[c] = g[node] + 1
                         prev_nodes[c] = node
                         if c in closed_set:
@@ -518,7 +538,7 @@ def findPath(start, end):
                             open_set.add(c)
                         pq.put((f,c))
         open_set.remove(node)
-        closed_set.add(node)'''
+        closed_set.add(node)
         
     path = []
     if found_end:
@@ -532,27 +552,7 @@ def findPath(start, end):
 def isValid(c,open_set,closed_set):
     global tabla
     if( c not in open_set and c not in closed_set):
-        if((tabla[c[0]-1][c[1]]=="===" or tabla[c[0]][c[1]-1]==" ǁ ")
-           or (tabla[c[0]-3][c[1]]=="===" or tabla[c[0]-1][c[1]]=="===" ) # u
-           or (tabla[c[0]+3][c[1]]=="===" or tabla[c[0]+1][c[1]]=="===") # d
-           or (tabla[c[0]][c[1]-3]==" ǁ " or tabla[c[0]][c[1]-1]==" ǁ ") # l
-           or (tabla[c[0]][c[1]+3]==" ǁ " or tabla[c[0]][c[1]+1]==" ǁ ") # r
-           or ((tabla[c[0]-1][c[1]]=="===" and tabla[c[0]-1][c[1]+2]=="===")
-            or (tabla[c[0]-2][c[1]+1]==" ǁ " and tabla[c[0]][c[1]+1]==" ǁ ")
-            or (tabla[c[0]-1][c[1]+2]=="===" and tabla[c[0]-2][c[1]+1]==" ǁ ")
-            or (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]][c[1]+1]==" ǁ ")) # ur
-            or ((tabla[c[0]-1][c[1]-2]=="===" and tabla[c[0]-1][c[1]]=="===")
-            or (tabla[c[0]][c[1]-1]==" ǁ " and tabla[c[0]-2][c[1]-1]==" ǁ ")
-            or (tabla[c[0]-1][c[1]-2]=="===" and tabla[c[0]-2][c[1]-1]==" ǁ ")
-            or (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]][c[1]-1]==" ǁ ")) # ul
-            or ((tabla[c[0]+1][c[1]]=="===" and tabla[c[0]+1][c[1]+2]=="===" )
-            or (tabla[c[0]][c[1]+1]==" ǁ " and tabla[c[0]+2][c[1]+1]==" ǁ " )
-            or (tabla[c[0]+1][c[1]+2]=="===" and tabla[c[0]+2][c[1]+1]==" ǁ ")
-            or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]][c[1]+1]==" ǁ ")) # dr
-            or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]+1][c[1]-2]=="===" )
-            or (tabla[c[0]][c[1]-1]==" ǁ " and tabla[c[0]+2][c[1]-1]==" ǁ " )
-            or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]][c[1]-1]==" ǁ ") 
-            or (tabla[c[0]+1][c[1]-2]=="===" and tabla[c[0]+2][c[1]-1]==" ǁ ")): # dl
+        if(tabla[c[0]-1][c[1]]=="===" or tabla[c[0]][c[1]-1]==" ǁ "):
             return False
         return True
     
@@ -579,10 +579,7 @@ m=28
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 tabla[7][6] = "==="
-tabla[7][8] = "==="
-tabla[6][5] = " ǁ "
-tabla[4][5] = " ǁ "
-update() 
+#update()
 checkWall()
 #print(tabla[6][4])
 #print(findPath((8, 4), (8, 16)))
