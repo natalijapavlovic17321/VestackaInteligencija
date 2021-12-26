@@ -285,7 +285,6 @@ def zid():
             print("Plavi zid:")
             plavi()
             oZidovi -= 1
-            print(checkWall())
         elif (slovo == 'z'):
             print("Zeleni zid:")
             zeleni()
@@ -503,7 +502,8 @@ def game():
     global moved
     inputT()
     tabla=Tabla(n,m,x1,x2,o1,o2)
-    statesOfPlayer(" X ")
+    #statesOfPlayer(" X ")
+    update()
     while (not endGame()):
         print("Korisnik " + cijiPotez +" je na potezu")
         #zid()
