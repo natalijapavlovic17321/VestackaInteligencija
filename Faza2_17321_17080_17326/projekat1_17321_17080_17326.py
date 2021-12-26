@@ -855,11 +855,11 @@ def makeNewState(koIgra,zid,vrstaZida,potez):
             tablaDup[pom[0]][pom[1]]="   "
             tablaDup[pom[0]+2][pom[1]-2]=ispis
     if(vrstaZida=="plavi"):
-        tablaDup[zid[0]][zid[1]-2] = "==="
+        tablaDup[zid[0]][zid[1]+2] = "==="   #ili minuss 2???
         tablaDup[zid[0]][zid[1]] = "===" 
     else:
         if(vrstaZida=="zeleni"):
-            tablaDup[zid[0]-2][zid[1]] = " ǁ "
+            tablaDup[zid[0]+2][zid[1]] = " ǁ "  #ili minus 2
             tablaDup[zid[0]][zid[1]] = " ǁ "
     listaStates.append(tablaDup)
     return tablaDup
