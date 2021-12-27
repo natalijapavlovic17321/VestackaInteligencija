@@ -503,7 +503,6 @@ def game():
     inputT()
     tabla=Tabla(n,m,x1,x2,o1,o2)
     #statesOfPlayer(" X ")
-    update()
     while (not endGame()):
         print("Korisnik " + cijiPotez +" je na potezu")
         #zid()
