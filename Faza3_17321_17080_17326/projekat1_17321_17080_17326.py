@@ -462,9 +462,16 @@ def update():
     for key in pozicije.keys():
         pom=pozicije[key]
         tabla[pom[0]][pom[1]]=key
+    niz=[" "  for i in range(m)]
+    for j in range(m):
+                if(j%2==0):
+                    a=str(int(j/2)+1)
+                    niz[j]=" "+a+" "
+                else: niz[j]= "   "
     a = np.array(tabla)
     for line in a:
        print ('  '.join(map(str, line)))
+    print ('  '.join(map(str, niz)))
 def startPos():
     global tabla
     global x1
