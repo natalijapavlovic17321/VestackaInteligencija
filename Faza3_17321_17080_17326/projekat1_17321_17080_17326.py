@@ -466,7 +466,9 @@ def update():
     for j in range(m):
                 if(j%2==0):
                     a=str(int(j/2)+1)
-                    niz[j]=" "+a+" "
+                    if(int(a)>=10):
+                        niz[j]=" "+a
+                    else: niz[j]=" "+a+" "
                 else: niz[j]= "   "
     a = np.array(tabla)
     for line in a:
