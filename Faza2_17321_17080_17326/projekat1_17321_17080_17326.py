@@ -758,19 +758,19 @@ def zidStates(potez,koIgra):
     for i in range(n-2):
         for j in range(m-2):
             if i%2==1 and j%2==0:
-                if(i<n-1 and j<m-1 and i > 0 and j > 0 and tabla[i-1][j-2] != "===" and tabla[i-1][j] != "===" and tabla[i-2][j-1] != " ǁ " or tabla[i][j-1] != " ǁ "):
+                if(i<n-1 and j<m-1 and i > 0 and j > 0 and tabla[i][j-2] != "===" and tabla[i][j] != "===" and tabla[i-2][j] != " ǁ " or tabla[i][j] != " ǁ "):
                     p=[i,j]
                     copy=np.copy(tabla)
-                    tabla[i][j+2] = "==="   
+                    tabla[i][j-2] = "==="   
                     tabla[i][j] = "===" 
                     if(checkWall()):
                         makeNewState(koIgra,p,"plavi",potez)
                     tabla=copy
             if j%2==1 and i%2==0:
-                if(i<n-1 and j<m-1 and i > 0 and j > 0 and tabla[i-1][j-2] != "===" or tabla[i-1][j] != "===" and tabla[i-2][j-1] != " ǁ " and tabla[i][j-1] != " ǁ "):
+                if(i<n-1 and j<m-1 and i > 0 and j > 0 and tabla[i][j-2] != "===" or tabla[i][j] != "===" and tabla[i-2][j] != " ǁ " and tabla[i][j] != " ǁ "):
                     z=[i,j]
                     copy=np.copy(tabla)
-                    tabla[i+2][j] = " ǁ " 
+                    tabla[i-2][j] = " ǁ " 
                     tabla[i][j] = " ǁ "
                     if(checkWall()):
                         makeNewState(koIgra,z,"zeleni",potez)
@@ -783,11 +783,12 @@ def makeNewState(koIgra,zid,vrstaZida,potez):
     global o2
     pom=pozicije[koIgra]
     ispis=""
-    tablaDup = [ [" "  for i in range(m)] for j in range(n) ]
+    '''tablaDup = [ [" "  for i in range(m)] for j in range(n) ]
     for i in range (n-1):
         for j in range(m):
-            tablaDup[i][j]=tabla[i][j]
+            tablaDup[i][j]=tabla[i][j]'''
     #tablaDup=tabla #novo stanje
+    tablaDup=np.copy(tabla)
     if(koIgra=='px1' or koIgra=='px2'):
         ispis=" X "
     else: ispis=" O "
@@ -863,11 +864,11 @@ def makeNewState(koIgra,zid,vrstaZida,potez):
             tablaDup[pom[0]][pom[1]]="   "
             tablaDup[pom[0]+2][pom[1]-2]=ispis
     if(vrstaZida=="plavi"):
-        tablaDup[zid[0]][zid[1]+2] = "==="   #ili minuss 2???
+        tablaDup[zid[0]][zid[1]-2] = "==="  
         tablaDup[zid[0]][zid[1]] = "===" 
     else:
         if(vrstaZida=="zeleni"):
-            tablaDup[zid[0]+2][zid[1]] = " ǁ "  #ili minus 2
+            tablaDup[zid[0]-2][zid[1]] = " ǁ "  
             tablaDup[zid[0]][zid[1]] = " ǁ "
     listaStates.append(tablaDup)
     return tablaDup
