@@ -878,10 +878,66 @@ def makeNewState(koIgra,zid,vrstaZida,potez):
         if(vrstaZida=="zeleni"):
             tablaDup[zid[0]+2][zid[1]] = " ǁ "  
             tablaDup[zid[0]][zid[1]] = " ǁ "
-    listaStates.append(tablaDup)
+    listaStates.append(tablaDup) #sva sledeca stanja se cuvaju u globalnoj promeljivoj listaStates
+    #ukoliko se ona koristi mora da se ociste rpethodna stanja tj lista pre racunanja ostalih stanja inc ce da ostane u promenljivoj!!!!!!!!!
+    #moze da se prebaci u dictionary za px1 i px2 npr
+    #ili da se prebaci u return da se vraca lista umesto da se cuva u globalnoj promenljivoj
     return tablaDup
 
+def minimax(stanje,dubina,moj_potez, potez=None):
+    #def minimax(stanje,dubina,moj_potez,alpha = (A, 0), beta = (A, 10)): -lBodsecanje gde je A pocetno stanje
+    #napise poziv fje sa primenom max_value i min_value uemsto max_stanje..
 
+    '''oceni- heuristika
+    kraj-ispituje jek je kraj igre?
+    full-puna tabla
+    igraj- odigravanje potez'''
+    if abs(kraj(stanje)) == 10:
+        return (potez, kraj(stanje))
+    if full(stanje):
+        return (potez, 0)
+    igrac = X if moj_potez else O
+    fja = max_stanje if moj_potez else min_stanje
+    lp = nova_stanja(stanje)
+    if dubina == 0:
+        return (potez, oceni(stanje))
+    if lp is None or len(lp) == 0:
+        return (potez, oceni(stanje))
+    return fja([minimax(igraj(x, igrac, stanje), dubina - 1, not moj_potez, x if potez is None else potez) for x in lp])
+    #lp = nova_stanja(stanje)
+    #fja = max_stanje if moj_potez else min_stanje
+    #if dubina == 0 or lp is None:
+        #return (stanje, proceni_stanje(stanje))
+    #return fja([minimax(x, dubina - 1, not moj_potez) for x in lp])
+def nova_stanja(stanje):
+    #NAPISE
+    return
+def proceni_stanje(stanje): 
+    #preth da kao postoji stanje nzm sta je ova fja
+    #stanja kao dictionary?
+    return listaStates[stanje] if stanje in listaStates else 0
+def max_stanje(lsv):    #bez lBodsecanje
+    return max(lsv,key=lambda x:x[1])
+def min_stanje(lsv):    #bez lBodsecanje
+    return min(lsv,key=lambda x:x[1])
+def max_value(stanje, dubina, alpha, beta):   #lBodsecanje
+    if dubina == 0:
+        return (stanje, proceni_stanje(stanje))
+    else:
+        for s in nova_stanja(stanje):
+            alpha = max(alpha, min_value(s, dubina - 1, alpha, beta), key=lambda x: x[1])
+            if alpha[1] >= beta[1]:
+                return beta
+    return alpha
+def min_value(stanje, dubina, alpha, beta):
+    if dubina == 0:
+        return (stanje, proceni_stanje(stanje))   #lBodsecanje
+    else:
+        for s in nova_stanja(stanje):
+            beta = min(beta, max_value(s, dubina - 1, alpha, beta),key=lambda x: x[1])
+            if beta[1] <= alpha[1]:
+                return alpha
+    return beta
 '''n=22
 m=28
 inputT()
