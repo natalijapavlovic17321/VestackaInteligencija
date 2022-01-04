@@ -511,7 +511,7 @@ def game():
     global moved
     inputT()
     tabla=Tabla(n,m,x1,x2,o1,o2)
-    #statesOfPlayer(" X ")
+    #statesOfPlayer("x",np.copy(tabla))
     while (not endGame()):
         print("Korisnik " + cijiPotez +" je na potezu")
         #zid()
@@ -676,17 +676,17 @@ def checkWall():
         if(findPath((pozicije[l][0],pozicije[l][1]),o2)==[]):
             return False
     return True
-def statesOfPlayer(koIgra):
-    if(koIgra==" X "):
-        states('px2')
-        states('px1')
-        print(len(listaStates))
+def statesOfPlayer(koIgra,stanje):
+    if(koIgra=="x"):
+        states('px2',stanje)
+        states('px1',stanje)
+        #print(len(listaStates))
         update()
     else: 
-        states('po1')
-        states('po2')
-        print(len(listaStates))
-def states(koIgra):
+        states('po1',stanje)
+        states('po2',stanje)
+        #print(len(listaStates))
+def states(koIgra,stanje):
     global xZidovi
     global oZidovi
     zidovi=0
@@ -695,68 +695,68 @@ def states(koIgra):
     else: zidovi=oZidovi
     global pozicije
     pom=pozicije[koIgra]
-    global tabla
+    
     global listaStates
-    if(pom[0]!=0 and pom[0]!=2 and pom[0]!=1 and tabla[pom[0]-3][pom[1]]!="===" and tabla[pom[0]-1][pom[1]]!="===" ): #u
+    if(pom[0]!=0 and pom[0]!=2 and pom[0]!=1 and stanje[pom[0]-3][pom[1]]!="===" and stanje[pom[0]-1][pom[1]]!="===" ): #u
         potez="u" #koji je potez
         if(zidovi>0):
-            zidStates(potez,koIgra)
+            zidStates(potez,koIgra,stanje)
         else: 
-            listaStates.append(makeNewState(koIgra,[0,0],"",potez))
-    if(pom[0]!=n-2 and pom[0]!=n-4 and tabla[pom[0]+3][pom[1]]!="===" and tabla[pom[0]+1][pom[1]]!="===" ): #d
+            listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
+    if(pom[0]!=n-2 and pom[0]!=n-4 and stanje[pom[0]+3][pom[1]]!="===" and stanje[pom[0]+1][pom[1]]!="===" ): #d
         potez="d"
         if(zidovi>0):
-            zidStates(potez,koIgra)
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez))
-    if(pom[1]!=0 and pom[1]!=2 and pom[1]!=1 and tabla[pom[0]][pom[1]-3]!=" ǁ " and tabla[pom[0]][pom[1]-1]!=" ǁ " ): #l
+            zidStates(potez,koIgra,stanje)
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
+    if(pom[1]!=0 and pom[1]!=2 and pom[1]!=1 and stanje[pom[0]][pom[1]-3]!=" ǁ " and stanje[pom[0]][pom[1]-1]!=" ǁ " ): #l
         potez="l"
         if(zidovi>0):
-            zidStates(potez,koIgra)
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez))
-    if(pom[1]!=m-2 and pom[1]!=m-4 and tabla[pom[0]][pom[1]+3]!=" ǁ " and tabla[pom[0]][pom[1]+1]!=" ǁ " ): #r
+            zidStates(potez,koIgra,stanje)
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
+    if(pom[1]!=m-2 and pom[1]!=m-4 and stanje[pom[0]][pom[1]+3]!=" ǁ " and stanje[pom[0]][pom[1]+1]!=" ǁ " ): #r
         potez="r"
         if(zidovi>0):
-            zidStates(potez,koIgra)
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez))
+            zidStates(potez,koIgra,stanje)
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
     if((pom[0]!=0) and (pom[1]!=m-2 and pom[1]!=m-4) 
-                    and (tabla[pom[0]-1][pom[1]]!="===" or tabla[pom[0]-1][pom[1]+2]!="===")
-                    and (tabla[pom[0]-2][pom[1]+1]!=" ǁ " or tabla[pom[0]][pom[1]+1]!=" ǁ ")
-                    and (tabla[pom[0]-1][pom[1]+2]!="===" or tabla[pom[0]-2][pom[1]+1]!=" ǁ ")
-                    and (tabla[pom[0]-1][pom[1]]!="===" or tabla[pom[0]][pom[1]+1]!=" ǁ ")): #ur
+                    and (stanje[pom[0]-1][pom[1]]!="===" or stanje[pom[0]-1][pom[1]+2]!="===")
+                    and (stanje[pom[0]-2][pom[1]+1]!=" ǁ " or stanje[pom[0]][pom[1]+1]!=" ǁ ")
+                    and (stanje[pom[0]-1][pom[1]+2]!="===" or stanje[pom[0]-2][pom[1]+1]!=" ǁ ")
+                    and (stanje[pom[0]-1][pom[1]]!="===" or stanje[pom[0]][pom[1]+1]!=" ǁ ")): #ur
         potez="ur"
         if(zidovi>0):
-            zidStates(potez,koIgra)
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez))
+            zidStates(potez,koIgra,stanje)
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
     if((pom[0]!=0) and (pom[1]!=0 and pom[1]!=1)
-                    and (tabla[pom[0]-1][pom[1]-2]!="===" or tabla[pom[0]-1][pom[1]]!="===")
-                    and (tabla[pom[0]][pom[1]-1]!=" ǁ " or tabla[pom[0]-2][pom[1]-1]!=" ǁ ")
-                    and (tabla[pom[0]-1][pom[1]-2]!="===" or tabla[pom[0]-2][pom[1]-1]!=" ǁ ")
-                    and (tabla[pom[0]-1][pom[1]]!="===" or tabla[pom[0]][pom[1]-1]!=" ǁ ")): #ul
+                    and (stanje[pom[0]-1][pom[1]-2]!="===" or stanje[pom[0]-1][pom[1]]!="===")
+                    and (stanje[pom[0]][pom[1]-1]!=" ǁ " or stanje[pom[0]-2][pom[1]-1]!=" ǁ ")
+                    and (stanje[pom[0]-1][pom[1]-2]!="===" or stanje[pom[0]-2][pom[1]-1]!=" ǁ ")
+                    and (stanje[pom[0]-1][pom[1]]!="===" or stanje[pom[0]][pom[1]-1]!=" ǁ ")): #ul
         potez="ul"
         if(zidovi>0):
-            zidStates(potez,koIgra)
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez))
+            zidStates(potez,koIgra,stanje)
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
     if((pom[0]!=n-2) and(pom[1]!=m-2 and pom[1]!=m-4)
-                    and (tabla[pom[0]+1][pom[1]]!="===" or tabla[pom[0]+1][pom[1]+2]!="===" )
-                    and (tabla[pom[0]][pom[1]+1]!=" ǁ " or tabla[pom[0]+2][pom[1]+1]!=" ǁ " )
-                    and (tabla[pom[0]+1][pom[1]+2]!="===" or tabla[pom[0]+2][pom[1]+1]!=" ǁ ")
-                    and (tabla[pom[0]+1][pom[1]]!="===" or tabla[pom[0]][pom[1]+1]!=" ǁ ")): #dr
+                    and (stanje[pom[0]+1][pom[1]]!="===" or stanje[pom[0]+1][pom[1]+2]!="===" )
+                    and (stanje[pom[0]][pom[1]+1]!=" ǁ " or stanje[pom[0]+2][pom[1]+1]!=" ǁ " )
+                    and (stanje[pom[0]+1][pom[1]+2]!="===" or stanje[pom[0]+2][pom[1]+1]!=" ǁ ")
+                    and (stanje[pom[0]+1][pom[1]]!="===" or stanje[pom[0]][pom[1]+1]!=" ǁ ")): #dr
         potez="dr"
         if(zidovi>0):
-            zidStates(potez,koIgra)
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez))
+            zidStates(potez,koIgra,stanje)
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
     if((pom[0]!=n-2) and (pom[1]!=0 and pom[1]!=1)
-                    and (tabla[pom[0]+1][pom[1]]!="===" or tabla[pom[0]+1][pom[1]-2]!="===" )
-                    and (tabla[pom[0]][pom[1]-1]!=" ǁ " or tabla[pom[0]+2][pom[1]-1]!=" ǁ " )
-                    and (tabla[pom[0]+1][pom[1]]!="===" or tabla[pom[0]][pom[1]-1]!=" ǁ ")
-                    and (tabla[pom[0]+1][pom[1]-2]!="===" or tabla[pom[0]+2][pom[1]-1]!=" ǁ ")): #dl
+                    and (stanje[pom[0]+1][pom[1]]!="===" or stanje[pom[0]+1][pom[1]-2]!="===" )
+                    and (stanje[pom[0]][pom[1]-1]!=" ǁ " or stanje[pom[0]+2][pom[1]-1]!=" ǁ " )
+                    and (stanje[pom[0]+1][pom[1]]!="===" or stanje[pom[0]][pom[1]-1]!=" ǁ ")
+                    and (stanje[pom[0]+1][pom[1]-2]!="===" or stanje[pom[0]+2][pom[1]-1]!=" ǁ ")): #dl
         potez="dl"
         if(zidovi>0):
-            zidStates(potez,koIgra) 
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez))
+            zidStates(potez,koIgra,stanje) 
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
     return len(listaStates)
-def zidStates(potez,koIgra):
-    global tabla
+def zidStates(potez,koIgra,stanje):
+    
     global n
     global m 
     global pozicije
@@ -766,24 +766,24 @@ def zidStates(potez,koIgra):
     for i in range(n-2):
         for j in range(m-2):
             if i%2==1 and j%2==0:
-                if(i<n-1 and j<m-1 and tabla[i][j+2] != "===" and tabla[i][j] != "===" and tabla[i-1][j+1] != " ǁ " or tabla[i+1][j+1] != " ǁ "):
+                if(i<n-1 and j<m-1 and stanje[i][j+2] != "===" and stanje[i][j] != "===" and stanje[i-1][j+1] != " ǁ " or stanje[i+1][j+1] != " ǁ "):
                     p=[i,j]
-                    copy=np.copy(tabla)
-                    tabla[i][j+2] = "==="   
-                    tabla[i][j] = "===" 
+                    copy=np.copy(stanje)
+                    stanje[i][j+2] = "==="   
+                    stanje[i][j] = "===" 
                     if(checkWall()):
-                        makeNewState(koIgra,p,"plavi",potez)
-                    tabla=copy
+                        listaStates.append(makeNewState(koIgra,p,"plavi",potez,stanje))
+                    stanje=copy
             if j%2==1 and i%2==0:
-                if(i<n-1 and j<m-1  and tabla[i+2][j] != "===" or tabla[i][j] != "===" and tabla[i+1][j-1] != " ǁ " and tabla[i+1][j+1] != " ǁ "):
+                if(i<n-1 and j<m-1  and stanje[i+2][j] != "===" or stanje[i][j] != "===" and stanje[i+1][j-1] != " ǁ " and stanje[i+1][j+1] != " ǁ "):
                     z=[i,j]
-                    copy=np.copy(tabla)
-                    tabla[i+2][j] = " ǁ " 
-                    tabla[i][j] = " ǁ "
+                    copy=np.copy(stanje)
+                    stanje[i+2][j] = " ǁ " 
+                    stanje[i][j] = " ǁ "
                     if(checkWall()):
-                        makeNewState(koIgra,z,"zeleni",potez)
-                    tabla=copy
-def makeNewState(koIgra,zid,vrstaZida,potez):
+                        listaStates.append(makeNewState(koIgra,z,"zeleni",potez,stanje))
+                    stanje=copy
+def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
     global pozicije
     global x1
     global x2
@@ -796,7 +796,7 @@ def makeNewState(koIgra,zid,vrstaZida,potez):
         for j in range(m):
             tablaDup[i][j]=tabla[i][j]'''
     #tablaDup=tabla #novo stanje
-    tablaDup=np.copy(tabla)
+    tablaDup=np.copy(stanje)
     if(koIgra=='px1' or koIgra=='px2'):
         ispis=" X "
     else: ispis=" O "
@@ -878,45 +878,51 @@ def makeNewState(koIgra,zid,vrstaZida,potez):
         if(vrstaZida=="zeleni"):
             tablaDup[zid[0]+2][zid[1]] = " ǁ "  
             tablaDup[zid[0]][zid[1]] = " ǁ "
-    listaStates.append(tablaDup) #sva sledeca stanja se cuvaju u globalnoj promeljivoj listaStates
+    #listaStates.append(tablaDup) 
+    return tablaDup
+    #sva sledeca stanja se cuvaju u globalnoj promeljivoj listaStates
     #ukoliko se ona koristi mora da se ociste rpethodna stanja tj lista pre racunanja ostalih stanja inc ce da ostane u promenljivoj!!!!!!!!!
     #moze da se prebaci u dictionary za px1 i px2 npr
     #ili da se prebaci u return da se vraca lista umesto da se cuva u globalnoj promenljivoj
-    return tablaDup
+    
 
 def minimax(stanje,dubina,moj_potez, potez=None):
     #def minimax(stanje,dubina,moj_potez,alpha = (A, 0), beta = (A, 10)): -lBodsecanje gde je A pocetno stanje
-    #napise poziv fje sa primenom max_value i min_value uemsto max_stanje..
-
+    #napise poziv fje sa primenom max_value i min_value uemsto max_stanje..alpha = (A, 0),beta = (A, 10)
     '''oceni- heuristika
     kraj-ispituje jek je kraj igre?
     full-puna tabla
     igraj- odigravanje potez'''
-    if abs(kraj(stanje)) == 10:
+    if kraj(stanje):
         return (potez, kraj(stanje))
-    if full(stanje):
-        return (potez, 0)
-    igrac = X if moj_potez else O
-    fja = max_stanje if moj_potez else min_stanje
-    lp = nova_stanja(stanje)
+    if (player1):
+        igrac = "o" if moj_potez else "x"
+    else: 
+        igrac = "x" if moj_potez else "o"
+    fja = max_value if moj_potez else min_value
+    lp = nova_stanja(stanje,igrac)
     if dubina == 0:
         return (potez, oceni(stanje))
     if lp is None or len(lp) == 0:
         return (potez, oceni(stanje))
-    return fja([minimax(igraj(x, igrac, stanje), dubina - 1, not moj_potez, x if potez is None else potez) for x in lp])
+    return fja([minimax(x, dubina - 1, not moj_potez, x if potez is None else potez) for x in lp])
     #lp = nova_stanja(stanje)
     #fja = max_stanje if moj_potez else min_stanje
     #if dubina == 0 or lp is None:
         #return (stanje, proceni_stanje(stanje))
     #return fja([minimax(x, dubina - 1, not moj_potez) for x in lp])
-def nova_stanja(stanje):
-    #NAPISE
-    return
-def proceni_stanje(stanje): 
+def nova_stanja(stanje,igrac):#u koja se sve stanja moze preci iz zadatog stanja (fja promene stanja)
+    statesOfPlayer(igrac,stanje)
+    copy=np.copy(listaStates)
+    listaStates.clear()
+    return copy
+def proceni_stanje(stanje): #koliko konkretno stanje vodi igraca ka pobedi
+    #dictionary gde su values vrednosti od igraca do prve kucice pomocu findPath
     #preth da kao postoji stanje nzm sta je ova fja
     #stanja kao dictionary?
     return listaStates[stanje] if stanje in listaStates else 0
-def max_stanje(lsv):    #bez lBodsecanje
+def max_stanje(lsv):#odredjuje koje stanje ima najvecu vrednost fje procene za zadatu listu stanja 
+       #bez lBodsecanje
     return max(lsv,key=lambda x:x[1])
 def min_stanje(lsv):    #bez lBodsecanje
     return min(lsv,key=lambda x:x[1])
@@ -938,9 +944,42 @@ def min_value(stanje, dubina, alpha, beta):
             if beta[1] <= alpha[1]:
                 return alpha
     return beta
-'''n=22
+def igraj(pos, igrac, stanje):
+            return [[igrac if pos[0] == j and pos[1] == i
+                else stanje[j][i] for i in range(0, 3)]
+                for j in range(0, 3)]
+def kraj(stanje):
+    ppx1=[]
+    ppx2=[]
+    ppo1=[]
+    ppo2=[]
+    for i in range(n-1):
+        for j in range(m-1):
+            if( stanje[i][j]=="px1"):
+                ppx1=[i,j]
+            if( stanje[i][j]=="px2"):
+                ppx2=[i,j]
+            if( stanje[i][j]=="po1"):
+                ppo1=[i,j]
+            if( stanje[i][j]=="po2"):
+                ppo2=[i,j]
+    px1i=[x1[0],x1[1]]
+    px2i=[x2[0],x2[1]]
+    po1i=[o1[0],o1[1]]
+    po2i=[o2[0],o2[1]]
+    if (ppx1==po1i or ppx1==po2i or ppx2==po1i or ppx2==po2i ):
+        return True
+    if (ppo1==px1i or ppo1==px2i or ppo2==px1i or ppo2==px2i ):
+        return True
+    return False
+n=22
 m=28
-inputT()
+pos=[1,2]
+stanje=[['','',''],
+          ['','',''],
+          [4,'','']  ]
+print(igraj(pos,4,stanje))
+'''inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 tabla[7][6] = "==="
 tabla[5][6] = "==="
@@ -949,8 +988,10 @@ tabla[13][6] = "==="
 tabla[4][17] = " ǁ "
 tabla[6][17] = " ǁ "
 tabla[6][7] = " ǁ "
-update()
-checkWall()'''
+print(findPath((8,22),(16,8)))
+
+update()'''
+#checkWall()
 #print(tabla[6][4])
 #print(findPath((8, 4), (8, 16)))
 
