@@ -512,6 +512,9 @@ def game():
     global moved
     inputT()
     tabla=Tabla(n,m,x1,x2,o1,o2)
+    update()
+    lista=nova_stanja(tabla,"x")
+    printT(lista[1])
     #statesOfPlayer("x",np.copy(tabla))
     while (not endGame()):
         print("Korisnik " + cijiPotez +" je na potezu")
@@ -718,9 +721,12 @@ def states(koIgra,stanje):
     if(koIgra=='px1' or koIgra=='px2'):
         zidovi=xZidovi
     else: zidovi=oZidovi
-    global pozicije
-    pom=pozicije[koIgra]
-    
+    pom=[]
+    for i in range(n-1):
+        for j in range(m-1):
+            if(i%2==0 and j%2==0):
+               if(stanje[i][j]==koIgra):
+                  pom=[i,j]
     global listaStates
     if(pom[0]!=0 and pom[0]!=2 and pom[0]!=1 and stanje[pom[0]-3][pom[1]]!="===" and stanje[pom[0]-1][pom[1]]!="===" ): #u
         potez="u" #koji je potez
@@ -814,17 +820,14 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
     global x2
     global o1
     global o2
-    pom=pozicije[koIgra]
-    ispis=""
-    '''tablaDup = [ [" "  for i in range(m)] for j in range(n) ]
-    for i in range (n-1):
-        for j in range(m):
-            tablaDup[i][j]=tabla[i][j]'''
-    #tablaDup=tabla #novo stanje
+    pom=[]
+    for i in range(n-1):
+        for j in range(m-1):
+            if(i%2==0 and j%2==0):
+               if(stanje[i][j]==koIgra):
+                  pom=[i,j]
+    ispis=koIgra
     tablaDup=np.copy(stanje)
-    if(koIgra=='px1' or koIgra=='px2'):
-        ispis=" X "
-    else: ispis=" O "
     lista = [] 
     lista2 = [] 
     lista3=[] 
@@ -903,6 +906,15 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
         if(vrstaZida=="zeleni"):
             tablaDup[zid[0]+2][zid[1]] = " ǁ "  
             tablaDup[zid[0]][zid[1]] = " ǁ "
+    if(ispis=="px1"):
+        tablaDup[x1[0]][x1[1]]=" X "
+    else: 
+        if(ispis=="px2"):
+             tablaDup[x2[0]][x2[1]]=" X "
+        else:
+            if(ispis=="po1"):
+                tablaDup[o1[0]][o1[1]]=" O "
+            else: tablaDup[o2[0]][o2[1]]=" O "
     #listaStates.append(tablaDup) 
     return tablaDup
     #sva sledeca stanja se cuvaju u globalnoj promeljivoj listaStates
@@ -1073,9 +1085,10 @@ def igraj():
 
 n=22
 m=28
-inputT()
+'''inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 tabla1=np.copy(tabla)
+<<<<<<< HEAD
 tabla[7][6] = "==="
 #tabla[5][6] = "==="
 tabla[6][5] = " ǁ "
@@ -1094,6 +1107,12 @@ print(checkWall(tabla))
 #print(minimax(tabla,3,"x",(tabla, 0),(tabla, 617)))
 #print(proceni_stanje(tabla))
 
+=======
+print()
+update()'''
+#print(minimax(tabla,3,"x",(tabla, 0),(tabla, 617)))
+#print(proceni_stanje(tabla))
+>>>>>>> b893e852f994227414af50b9ac96ed8a3e03130f
 #print(minimax(np.copy(tabla),1,"x",(np.copy(tabla), 0),(np.copy(tabla), 617))[0])
 #tabla=np.copy(minimax(tabla,3,"x",(tabla, 0),(tabla, 617))[0])
 #print(x1)
