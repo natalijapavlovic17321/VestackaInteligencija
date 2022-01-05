@@ -51,10 +51,10 @@ def Tabla(n, m ,p1,p2,p3,p4):
     tabla[p4[0]][p4[1]]=" O "
     return tabla
 
-def printT():
+def printT(stanje):
     global n
     global m
-    a = np.array(tabla)
+    a = np.array(stanje)
     for line in a:
        print ('  '.join(map(str, line)))
 
@@ -657,17 +657,32 @@ def isValid(c,open_set,closed_set,dx,dy):
                             or (tabla[c[0]-1][c[1]+2]=="===" and tabla[c[0]-2][c[1]+1]==" ǁ ")): # dl
                             return False    
         return True
-def checkWall():
+def checkWall(stanje):
     global pozicije
     global x1
     global x2
     global o1
     global o2
+    ppx1=[]
+    ppx2=[]
+    ppo1=[]
+    ppo2=[]
     pom=True
     lista=[]
+    for i in range(n-1):
+        for j in range(m-1):
+            if(stanje[i][j]== "px1"):
+                ppx1=[i,j]
+            if(stanje[i][j]== "px2"):
+                ppx2=[i,j]
+            if(stanje[i][j]== "po1"):
+                ppo1=[i,j]
+            if(stanje[i][j]== "po2"):
+                ppo2=[i,j]
+    poz=[ppx1,ppx2,ppo1,ppo2]
     for key in pozicije.keys():
             lista.append(key)
-    for l in lista:
+    '''for l in lista:
         if(findPath((pozicije[l][0],pozicije[l][1]),x1)==[]):         
             return False
         if(findPath((pozicije[l][0],pozicije[l][1]),x2)==[]):
@@ -675,7 +690,16 @@ def checkWall():
         if(findPath((pozicije[l][0],pozicije[l][1]),o1)==[]):
             return False
         if(findPath((pozicije[l][0],pozicije[l][1]),o2)==[]):
-            return False
+            return False'''
+    for s in range(3):
+        if(findPath((poz[s][0],poz[s][1]),x1)==[]):         
+                return False
+        if(findPath((poz[s][0],poz[s][1]),x2)==[]):
+                return False
+        if(findPath((poz[s][0],poz[s][1]),o1)==[]):
+                return False
+        if(findPath((poz[s][0],poz[s][1]),o2)==[]):
+                return False
     return True
 def statesOfPlayer(koIgra,stanje):
     if(koIgra=="x"):
@@ -942,9 +966,9 @@ def proceni_stanje(stanje): #koliko konkretno stanje vodi igraca ka pobedi
     tabla1[0][1]=" ǁ "
     tabla1[2][1]=" ǁ "
     a = np.array(tabla1)
-    for line in a:
-       print ('  '.join(map(str, line)))
-    print ('  '.join(map(str, niz)))
+    #for line in a:
+    #   print ('  '.join(map(str, line)))
+    #print ('  '.join(map(str, niz)))
     for i in range(n-1):
       for j in range(m-1):
          if (stanje[i][j] != tabla1[i][j]):
@@ -1052,11 +1076,25 @@ m=28
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 tabla1=np.copy(tabla)
-print()
+tabla[7][6] = "==="
+#tabla[5][6] = "==="
+tabla[6][5] = " ǁ "
+tabla[13][6] = "==="
+tabla[4][17] = " ǁ "
+tabla[6][17] = " ǁ "
+tabla[6][7] = " ǁ "
+#print(findPath((6, 6), x1))
 update()
+print(checkWall(tabla))
+
+#minimax(tabla,3,"x",(tabla, 0),(tabla, 617))
+#printT(tabla1)
+#print()
+#update()
 #print(minimax(tabla,3,"x",(tabla, 0),(tabla, 617)))
 #print(proceni_stanje(tabla))
-print(minimax(np.copy(tabla),1,"x",(np.copy(tabla), 0),(np.copy(tabla), 617))[0])
+
+#print(minimax(np.copy(tabla),1,"x",(np.copy(tabla), 0),(np.copy(tabla), 617))[0])
 #tabla=np.copy(minimax(tabla,3,"x",(tabla, 0),(tabla, 617))[0])
 #print(x1)
 #update()
