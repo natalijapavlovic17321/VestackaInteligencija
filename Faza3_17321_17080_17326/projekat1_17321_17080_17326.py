@@ -216,7 +216,7 @@ def plavi():
             
         tabla[x-1][y-2] = "==="
         tabla[x-1][y] = "==="   
-        if(checkWall()==False):
+        if(checkWall(tabla)==False):
                 tabla[x-1][y-2] = "___"
                 tabla[x-1][y] = "___"
                 print("Ne mozete tu postaviti zid, unesite neku drugu vrednost za vrstu i kolonu")                
@@ -244,7 +244,7 @@ def zeleni():
         tabla[x-2][y-1] = " ǁ "
         tabla[x][y-1] = " ǁ "
         
-        if(checkWall()==False):
+        if(checkWall(tabla)==False):
                 tabla[x-2][y-1] = " | "
                 tabla[x][y-1] = " | "
                 print("Ne mozete tu postaviti zid, unesite neku drugu vrednost za vrstu i kolonu")                
@@ -802,7 +802,7 @@ def zidStates(potez,koIgra,stanje):
                     copy=np.copy(stanje)
                     stanje[i][j+2] = "==="   
                     stanje[i][j] = "===" 
-                    if(checkWall()):
+                    if(checkWall(stanje)):
                         listaStates.append(makeNewState(koIgra,p,"plavi",potez,stanje))
                     stanje=copy
             if j%2==1 and i%2==0:
@@ -811,7 +811,7 @@ def zidStates(potez,koIgra,stanje):
                     copy=np.copy(stanje)
                     stanje[i+2][j] = " ǁ " 
                     stanje[i][j] = " ǁ "
-                    if(checkWall()):
+                    if(checkWall(stanje)):
                         listaStates.append(makeNewState(koIgra,z,"zeleni",potez,stanje))
                     stanje=copy
 def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
@@ -915,44 +915,31 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
             if(ispis=="po1"):
                 tablaDup[o1[0]][o1[1]]=" O "
             else: tablaDup[o2[0]][o2[1]]=" O "
-    #listaStates.append(tablaDup) 
     return tablaDup
-    #sva sledeca stanja se cuvaju u globalnoj promeljivoj listaStates
-    #ukoliko se ona koristi mora da se ociste rpethodna stanja tj lista pre racunanja ostalih stanja inc ce da ostane u promenljivoj!!!!!!!!!
-    #moze da se prebaci u dictionary za px1 i px2 npr
-    #ili da se prebaci u return da se vraca lista umesto da se cuva u globalnoj promenljivoj   
-def minimax(stanje,dubina,moj_potez, potez=None,alpha=(), beta=()):
-    #def minimax(stanje,dubina,moj_potez: -lBodsecanje gde je A pocetno stanje
-    #napise poziv fje sa primenom max_value i min_value uemsto max_stanje..alpha = (A, 0),beta = (A, 10)
-    #alfa je najbolja vrednost za igraca max a beta je najbolja vrednost za igraca min 
-    '''oceni- heuristika
-    kraj-ispituje jek je kraj igre?
-    full-puna tabla
-    igraj- odigravanje potez'''
+  
+def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
     if kraj(stanje):
-        return (potez, kraj(stanje))
+        return (potez, 617)
     if (player1):
         igrac = "o" if moj_potez else "x"
     else: 
         igrac = "x" if moj_potez else "o"
-    fja = max_value(stanje,dubina,alpha,beta) if moj_potez else min_value(stanje,dubina,alpha,beta)
+
+    fja = max_value if moj_potez else min_value
     lp = nova_stanja(stanje,igrac)
+
     if dubina == 0:
         return (potez, proceni_stanje(stanje))
     if lp is None or len(lp) == 0:
         return (potez, proceni_stanje(stanje))
-    return fja([minimax(x, dubina - 1, not moj_potez, x if potez is None else potez,alfa=(x,proceni_stanje(x)),beta=(x,proceni_stanje(x))) for x in lp])
-    #lp = nova_stanja(stanje)
-    #fja = max_stanje if moj_potez else min_stanje
-    #if dubina == 0 or lp is None:
-        #return (stanje, proceni_stanje(stanje))
-    #return fja([minimax(x, dubina - 1, not moj_potez) for x in lp])
-def nova_stanja(stanje,igrac):#u koja se sve stanja moze preci iz zadatog stanja (fja promene stanja)
+    return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),alpha,beta)
+
+def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,stanje)
     copy=np.copy(listaStates)
     listaStates.clear()
     return copy
-def proceni_stanje(stanje): #koliko konkretno stanje vodi igraca ka pobedi
+def proceni_stanje(stanje):
     global tabla1
 
     tabla1[x1[0]][x1[1]]=" X "
@@ -978,39 +965,39 @@ def proceni_stanje(stanje): #koliko konkretno stanje vodi igraca ka pobedi
     tabla1[0][1]=" ǁ "
     tabla1[2][1]=" ǁ "
     a = np.array(tabla1)
-    #for line in a:
-    #   print ('  '.join(map(str, line)))
-    #print ('  '.join(map(str, niz)))
+
     for i in range(n-1):
       for j in range(m-1):
          if (stanje[i][j] != tabla1[i][j]):
             return 616
     
     return 0
-'''def max_stanje(lsv):#odredjuje koje stanje ima najvecu vrednost fje procene za zadatu listu stanja 
-       #bez lBodsecanje
-    return max(lsv,key=lambda x:x[1])
-def min_stanje(lsv):    #bez lBodsecanje
-    return min(lsv,key=lambda x:x[1])'''
-def max_value(stanje, dubina, alpha, beta):   #lBodsecanje
-    if dubina == 0:#jer dubnu smanjujemo svaki sledeci put
-        return (stanje, proceni_stanje(stanje))#vracamo tuple sa stanjem i njegovom vrednosti
+def max_value(stanje, alpha, beta):  
+    '''if dubina == 0:
+        return (stanje, proceni_stanje(stanje))
     else:
-        for s in nova_stanja(stanje):#odredjujemo sva nova stanja i prolazimo kroz njih
-            alpha = max(alpha, min_value(s, dubina - 1, alpha, beta), key=lambda x: x[1])
-            #odredjujemo alfa, kao maksimum izmedju alfa i minimalne vrednosti, vracamo kljuc cija je vrednost 1 jer vrsimo proveru po proceni ne po stanju
-            if alpha[1] >= beta[1]:
+    for s in nova_stanja(stanje):
+    alpha = max(alpha, min_value(s, alpha, beta), key=lambda x: x[1])
+    if alpha[1] >= beta[1]:
                 return beta
+    return alpha'''
+    alpha = max(max(stanje, key=lambda x: x[1]), alpha, key=lambda x: x[1])
+    if alpha[1] >= beta[1]:
+        return beta
     return alpha
-def min_value(stanje, dubina, alpha, beta):
-    if dubina == 0:
-        return (stanje, proceni_stanje(stanje))   #lBodsecanje
+def min_value(stanje,  alpha, beta):
+    '''if dubina == 0:
+        return (stanje, proceni_stanje(stanje))
     else:
-        for s in nova_stanja(stanje):
-            beta = min(beta, max_value(s, dubina - 1, alpha, beta),key=lambda x: x[1])
-            if beta[1] <= alpha[1]:
+    for s in nova_stanja(stanje):
+    beta = min(beta, max_value(s, alpha, beta),key=lambda x: x[1])
+    if beta[1] <= alpha[1]:
                 return alpha
-    return beta    
+    return beta'''    
+    beta = min(min(stanje, key=lambda x: x[1]), beta, key=lambda x: x[1])
+    if beta[1] <= alpha[1]:
+        return alpha
+    return beta
 def kraj(stanje):
     ppx1=[]
     ppx2=[]
@@ -1031,10 +1018,10 @@ def kraj(stanje):
     po1i=[o1[0],o1[1]]
     po2i=[o2[0],o2[1]]
     if (ppx1==po1i or ppx1==po2i or ppx2==po1i or ppx2==po2i ):
-        return 0
+        return True
     if (ppo1==px1i or ppo1==px2i or ppo2==px1i or ppo2==px2i ):
-        return 0
-    return proceni_stanje(stanje)
+        return True
+    return False
 def igraj():
     global tabla
     global x1
@@ -1051,7 +1038,6 @@ def igraj():
     tabla=Tabla(n,m,x1,x2,o1,o2)           
     while (not endGame()):
         if(player1):
-            #while(kraj(tabla)==0):
             rez=minimax(tabla,3,"x",(tabla, 0),(tabla, 617))
             naj=rez[0]
             tabla=naj
@@ -1072,8 +1058,7 @@ def igraj():
                 moved=False 
                 update()
                 zid()
-                update()
-            
+                update()        
             rez=minimax(tabla,3,"x",(tabla, 0),(tabla, 617))
             naj=rez[0]
             tabla=naj
@@ -1085,11 +1070,14 @@ def igraj():
 
 n=22
 m=28
-'''inputT()
+inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
+update()
 tabla1=np.copy(tabla)
-<<<<<<< HEAD
-tabla[7][6] = "==="
+tabla=minimax(tabla,2,"x",(tabla, 0),(tabla, 617),None)[0]
+#printT(tabla)
+#printT(t)
+'''tabla[7][6] = "==="
 #tabla[5][6] = "==="
 tabla[6][5] = " ǁ "
 tabla[13][6] = "==="
@@ -1100,24 +1088,18 @@ tabla[6][7] = " ǁ "
 update()
 print(checkWall(tabla))
 
-#minimax(tabla,3,"x",(tabla, 0),(tabla, 617))
+#
 #printT(tabla1)
 #print()
 #update()
 #print(minimax(tabla,3,"x",(tabla, 0),(tabla, 617)))
 #print(proceni_stanje(tabla))
 
-=======
-print()
-update()'''
-#print(minimax(tabla,3,"x",(tabla, 0),(tabla, 617)))
-#print(proceni_stanje(tabla))
->>>>>>> b893e852f994227414af50b9ac96ed8a3e03130f
 #print(minimax(np.copy(tabla),1,"x",(np.copy(tabla), 0),(np.copy(tabla), 617))[0])
 #tabla=np.copy(minimax(tabla,3,"x",(tabla, 0),(tabla, 617))[0])
 #print(x1)
 #update()
-'''
+
 tabla[7][6] = "==="
 tabla[5][6] = "==="
 tabla[6][5] = " ǁ "
@@ -1127,12 +1109,12 @@ tabla[6][17] = " ǁ "
 tabla[6][7] = " ǁ "
 print(findPath((8,22),(16,8)))
 
-update()'''
+update()
 #checkWall()
 #print(tabla[6][4])
-#print(findPath((8, 4), (8, 16)))
+#print(findPath((8, 4), (8, 16)))'''
 
-main()
+#main()
 
 
 
