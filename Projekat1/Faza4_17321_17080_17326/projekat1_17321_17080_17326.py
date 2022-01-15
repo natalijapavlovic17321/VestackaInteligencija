@@ -18,6 +18,8 @@ xZidovi=0
 oZidovi=0
 listaStates=list()
 tabla1=[]
+h={}
+he=[]
 def Tabla(n, m ,p1,p2,p3,p4):
     tabla = [ [" "  for i in range(m)] for j in range(n) ]
     '''for i in range(n-1):
@@ -534,7 +536,7 @@ def main():
         game()
         print("Da li zelite da igrate ponovo?")
         p=input()
-def findPath(start, end):
+def findPath(start, end,stanje):
     global n
     global m
     def h(x):
@@ -560,7 +562,7 @@ def findPath(start, end):
             break
         for dx, dy in zip([-2, 2, 0, 0, -2, -2, 2, 2], [0, 0, -2, 2, 2, -2, 2, -2]):
             c = (node[0]+dx, node[1]+dy)
-            if c[0] >= 0 and c[1] >= 0 and c[0] <= n-1 and c[1] <= m-1 and isValid(c,open_set,closed_set,dx,dy):
+            if c[0] >= 0 and c[1] >= 0 and c[0] <= n-1 and c[1] <= m-1 and isValid(c,open_set,closed_set,dx,dy,stanje):
                 f = g[node] + 1 + h(c)
                 if c not in open_set and c not in closed_set:
                 #if(isValid(c,open_set,closed_set)):
@@ -593,71 +595,72 @@ def findPath(start, end):
         path.append(start)
         path.reverse()
     return path
-def isValid(c,open_set,closed_set,dx,dy):
+def isValid(c,open_set,closed_set,dx,dy,stanje):
         global tabla
         global n
         global m
+        
         #if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
          #   return False
     #if( c not in open_set and c not in closed_set):
         if(( c[0]+1>n-1) and dx==2 and dy==0):
             return False
         else:
-            if(tabla[c[0]+1][c[1]]=="===" and dx==-2 and dy==0): #u
+            if(stanje[c[0]+1][c[1]]=="===" and dx==-2 and dy==0): #u
                 return False
             
         if(( c[1]+1>m-1) and dx==0 and dy==2):
             return False
         else:
-            if(tabla[c[0]][c[1]+1]==" ǁ "and dx==0 and dy==-2):#l
+            if(stanje[c[0]][c[1]+1]==" ǁ "and dx==0 and dy==-2):#l
                     return False
             
         if(( c[0]-1<0 ) and (dx==-2 and dy==0)):
             return False
         else:
-            if(tabla[c[0]-1][c[1]]=="==="and dx==2 and dy==0): #d
+            if(stanje[c[0]-1][c[1]]=="==="and dx==2 and dy==0): #d
                 return False
                 
         if(( c[1]-1<0 ) and dx==0 and dy==-2):
             return False
         else:
-            if ( tabla[c[0]][c[1]-1]==" ǁ " and dx==0 and dy==2): # r
+            if ( stanje[c[0]][c[1]-1]==" ǁ " and dx==0 and dy==2): # r
                 return False
         if(dx==-2 and dy==2):
             if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
                 return False
             else:
-                if (dx==-2 and dy==2 and (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]+1][c[1]-2]=="===")
-                        or (tabla[c[0]+2][c[1]-1]==" ǁ " and tabla[c[0]][c[1]-1]==" ǁ ")
-                        or (tabla[c[0]+1][c[1]-2]=="===" and tabla[c[0]+2][c[1]-1]==" ǁ ")
-                        or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]][c[1]-1]==" ǁ ")): #ur
+                if (dx==-2 and dy==2 and (stanje[c[0]+1][c[1]]=="===" and stanje[c[0]+1][c[1]-2]=="===")
+                        or (stanje[c[0]+2][c[1]-1]==" ǁ " and stanje[c[0]][c[1]-1]==" ǁ ")
+                        or (stanje[c[0]+1][c[1]-2]=="===" and stanje[c[0]+2][c[1]-1]==" ǁ ")
+                        or (stanje[c[0]+1][c[1]]=="===" and stanje[c[0]][c[1]-1]==" ǁ ")): #ur
                         return False   
         if(dx==-2 and dy==-2):        
             if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
                 return False
             else:
-                if (dx==-2 and dy==-2 and (tabla[c[0]+1][c[1]+2]=="===" and tabla[c[0]+1][c[1]]=="===")
-                            or (tabla[c[0]][c[1]+1]==" ǁ " and tabla[c[0]+2][c[1]+1]==" ǁ ")
-                            or (tabla[c[0]+1][c[1]+2]=="===" and tabla[c[0]+2][c[1]+1]==" ǁ ")
-                            or (tabla[c[0]+1][c[1]]=="===" and tabla[c[0]][c[1]+1]==" ǁ ")): # ul
+                if (dx==-2 and dy==-2 and (stanje[c[0]+1][c[1]+2]=="===" and stanje[c[0]+1][c[1]]=="===")
+                            or (stanje[c[0]][c[1]+1]==" ǁ " and stanje[c[0]+2][c[1]+1]==" ǁ ")
+                            or (stanje[c[0]+1][c[1]+2]=="===" and stanje[c[0]+2][c[1]+1]==" ǁ ")
+                            or (stanje[c[0]+1][c[1]]=="===" and stanje[c[0]][c[1]+1]==" ǁ ")): # ul
                             return False
         if(dx==+2 and dy==+2):
             if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
                 return False
             else:
-                if (dx==+2 and dy==+2 and (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]-1][c[1]-2]=="===" )
-                        or (tabla[c[0]][c[1]-1]==" ǁ " and tabla[c[0]-2][c[1]-1]==" ǁ " )
-                        or (tabla[c[0]-1][c[1]-2]=="===" and tabla[c[0]-2][c[1]-1]==" ǁ ")
-                        or (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]][c[1]-1]==" ǁ ")): # dr
+                if (dx==+2 and dy==+2 and (stanje[c[0]-1][c[1]]=="===" and stanje[c[0]-1][c[1]-2]=="===" )
+                        or (stanje[c[0]][c[1]-1]==" ǁ " and stanje[c[0]-2][c[1]-1]==" ǁ " )
+                        or (stanje[c[0]-1][c[1]-2]=="===" and stanje[c[0]-2][c[1]-1]==" ǁ ")
+                        or (stanje[c[0]-1][c[1]]=="===" and stanje[c[0]][c[1]-1]==" ǁ ")): # dr
                         return False
         if(dx==+2 and dy==-2):
             if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
                 return False
             else:
-                    if (dx==+2 and dy==-2 and (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]+1][c[1]-2]=="===" )
-                            or (tabla[c[0]][c[1]+1]==" ǁ " and tabla[c[0]-2][c[1]+1]==" ǁ " )
-                            or (tabla[c[0]-1][c[1]]=="===" and tabla[c[0]][c[1]+1]==" ǁ ")
-                            or (tabla[c[0]-1][c[1]+2]=="===" and tabla[c[0]-2][c[1]+1]==" ǁ ")): # dl
+                    if (dx==+2 and dy==-2 and (stanje[c[0]-1][c[1]]=="===" and stanje[c[0]+1][c[1]-2]=="===" )
+                            or (stanje[c[0]][c[1]+1]==" ǁ " and stanje[c[0]-2][c[1]+1]==" ǁ " )
+                            or (stanje[c[0]-1][c[1]]=="===" and stanje[c[0]][c[1]+1]==" ǁ ")
+                            or (stanje[c[0]-1][c[1]+2]=="===" and stanje[c[0]-2][c[1]+1]==" ǁ ")): # dl
                             return False    
         return True
 def checkWall(stanje):
@@ -695,13 +698,13 @@ def checkWall(stanje):
         if(findPath((pozicije[l][0],pozicije[l][1]),o2)==[]):
             return False'''
     for s in range(3):
-        if(findPath((poz[s][0],poz[s][1]),x1)==[]):         
+        if(findPath((poz[s][0],poz[s][1]),x1,stanje)==[]):         
                 return False
-        if(findPath((poz[s][0],poz[s][1]),x2)==[]):
+        if(findPath((poz[s][0],poz[s][1]),x2,stanje)==[]):
                 return False
-        if(findPath((poz[s][0],poz[s][1]),o1)==[]):
+        if(findPath((poz[s][0],poz[s][1]),o1,stanje)==[]):
                 return False
-        if(findPath((poz[s][0],poz[s][1]),o2)==[]):
+        if(findPath((poz[s][0],poz[s][1]),o2,stanje)==[]):
                 return False
     return True
 def statesOfPlayer(koIgra,stanje):
@@ -821,11 +824,26 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
     global o1
     global o2
     pom=[]
+    pom1=[]
     for i in range(n-1):
         for j in range(m-1):
             if(i%2==0 and j%2==0):
-               if(stanje[i][j]==koIgra):
+                if(stanje[i][j]==koIgra):
                   pom=[i,j]
+                '''if "x" in koIgra:
+                    if "1" in koIgra:
+                       if(stanje[i][j]=="px2"):
+                           pom1=[i,j]
+                    else:    
+                        if(stanje[i][j]=="px1"):
+                            pom1=[i,j]
+                elif "o" in koIgra:
+                    if "1" in koIgra:
+                        if(stanje[i][j]=="po2"):
+                           pom1=[i,j]
+                    else:    
+                        if(stanje[i][j]=="po1"):
+                            pom1=[i,j]'''
     ispis=koIgra
     tablaDup=np.copy(stanje)
     lista = [] 
@@ -915,6 +933,7 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
             if(ispis=="po1"):
                 tablaDup[o1[0]][o1[1]]=" O "
             else: tablaDup[o2[0]][o2[1]]=" O "
+    
     return tablaDup
   
 def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
@@ -929,9 +948,9 @@ def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
     lp = nova_stanja(stanje,igrac)
 
     if dubina == 0:
-        return (potez, proceni_stanje(stanje))
+        return (potez, proceni_stanje(igrac,moj_potez,stanje))
     if lp is None or len(lp) == 0:
-        return (potez, proceni_stanje(stanje))
+        return (potez, proceni_stanje(igrac,moj_potez,stanje))
     return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),alpha,beta)
 
 def nova_stanja(stanje,igrac):
@@ -939,39 +958,35 @@ def nova_stanja(stanje,igrac):
     copy=np.copy(listaStates)
     listaStates.clear()
     return copy
-def proceni_stanje(stanje):
-    global tabla1
-
-    tabla1[x1[0]][x1[1]]=" X "
-    tabla1[x2[0]][x2[1]]=" X "
-    tabla1[o1[0]][o1[1]]=" O "
-    tabla1[o2[0]][o2[1]]=" O "
-    for key in pozicije.keys():
-        pom=pozicije[key]
-        tabla1[pom[0]][pom[1]]=key
-    niz=[" "  for i in range(m)]
-    for j in range(m):
-                if(j%2==0):
-                    a=str(int(j/2)+1)
-                    if(int(a)>=10):
-                        niz[j]=" "+a
-                    else: niz[j]=" "+a+" "
-                else: niz[j]= "   "
-    p=pozicije["px1"]
-    tabla1[p[0]][p[1]]="   "
-    tabla1[p[0]-4][p[1]]="px1"
-    tabla1[x1[0]][x1[1]]=" X "
-    
-    tabla1[0][1]=" ǁ "
-    tabla1[2][1]=" ǁ "
-    a = np.array(tabla1)
-
+def proceni_stanje(igrac,moj_potez,stanje):
+    return random.randint(0, 617)
+    '''pom=[]
+    pom1=[]
     for i in range(n-1):
-      for j in range(m-1):
-         if (stanje[i][j] != tabla1[i][j]):
-            return 616
-    
-    return 0
+        for j in range(m-1):
+            if(i%2==0 and j%2==0):
+                if igrac=="x":
+                    if(stanje[i][j]=="px1"):
+                        pom=(i,j)
+                    if(stanje[i][j]=="px2"):
+                        pom1=(i,j)
+                if igrac=="o":
+                    if(stanje[i][j]=="po1"):
+                        pom=(i,j)
+                    if(stanje[i][j]=="po2"):
+                        pom1=(i,j)
+    p1=617
+    if moj_potez:
+        if(igrac=="x"):
+            p1=min(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
+        else:
+            p1=min(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
+    else:
+        if(igrac=="x"):
+            p1=max(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
+        else:
+            p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
+    return p1'''
 def max_value(stanje, alpha, beta):  
     '''if dubina == 0:
         return (stanje, proceni_stanje(stanje))
@@ -1022,6 +1037,69 @@ def kraj(stanje):
     if (ppo1==px1i or ppo1==px2i or ppo2==px1i or ppo2==px2i ):
         return True
     return False
+def najkraciPut(start,end,stanje):
+    return len(findPath(start,end,stanje))-1
+    
+
+def path(start, end):
+    global n
+    global m
+    def h(x):
+        return abs(end[0]-x[0])+abs(end[1]-x[1])
+    found_end = False
+    open_set = set()
+    open_set.add(start)
+    pq = PriorityQueue()
+    pq.put((0, start))
+    closed_set = set()
+    g = {}
+    prev_nodes = {}
+    g[start] = 0
+    prev_nodes[start] = None
+    
+    while len(open_set) > 0 and (not found_end):
+        node = pq.get()[1]
+        
+        if node not in open_set:
+            continue
+        if node == end:
+            found_end = True
+            break
+        for dx, dy in zip([-4, 4, 0, 0, -2, -2, 2, 2], [0, 0, -4, 4, 2, -2, 2, -2]):
+            c = (node[0]+dx, node[1]+dy)
+            if c[0] >= 0 and c[1] >= 0 and c[0] <= n-1 and c[1] <= m-1 and isValid(c,open_set,closed_set,dx,dy):
+                f = g[node] + 1 + h(c)
+                if c not in open_set and c not in closed_set:
+                #if(isValid(c,open_set,closed_set)):
+                    open_set.add(c)
+                    prev_nodes[c] = node
+                    g[c] = g[node] + 1
+                    pq.put((f,c))
+                else:
+                    '''prev_nodes[c] = node
+                    if c in closed_set:
+                        closed_set.remove(c)
+                        open_set.add(c)
+                    pq.put((f,c))'''
+                    #continue
+                    if g[c] > g[node] + 1 :
+                        g[c] = g[node] + 1
+                        prev_nodes[c] = node
+                        if c in closed_set:
+                                closed_set.remove(c)
+                                open_set.add(c)
+                        pq.put((f,c))
+        open_set.remove(node)
+        closed_set.add(node)
+    path = []
+    if found_end:
+        prev = end
+        while prev_nodes[prev] is not None:
+            path.append(prev)
+            prev = prev_nodes[prev]
+        path.append(start)
+        path.reverse()
+    return path
 def igraj():
     global tabla
     global x1
@@ -1073,11 +1151,21 @@ m=28
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 update()
-tabla1=np.copy(tabla)
-tabla=minimax(tabla,2,"x",(tabla, 0),(tabla, 617),None)[0]
+minimax(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)
+
+'''print(pozicije["px1"])
+print(pozicije["px2"])
+print(findPath((6,6),(14,20),tabla))
+print(najkraciPut((6,6),(14,20),tabla))
+#print(najkraciPut((6,6),(6,16)))
+#print(o1)
+#print(najkraciPut((6,4),(6,6),tabla))
+#statesOfPlayer("x",tabla)
+#tabla1=np.copy(tabla)
+#tabla=minimax(tabla,2,"x",(tabla, 0),(tabla, 617),None)[0]
 #printT(tabla)
 #printT(t)
-'''tabla[7][6] = "==="
+tabla[7][6] = "==="
 #tabla[5][6] = "==="
 tabla[6][5] = " ǁ "
 tabla[13][6] = "==="
