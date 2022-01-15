@@ -951,7 +951,7 @@ def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
         return (potez, proceni_stanje(igrac,moj_potez,stanje))
     if lp is None or len(lp) == 0:
         return (potez, proceni_stanje(igrac,moj_potez,stanje))
-    return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),alpha,beta)
+    return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina,alpha,beta)
 
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,stanje)
@@ -987,32 +987,32 @@ def proceni_stanje(igrac,moj_potez,stanje):
         else:
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
     return p1'''
-def max_value(stanje, alpha, beta):  
-    '''if dubina == 0:
+def max_value(stanje,dubina, alpha, beta):  
+    if dubina == 0:
         return (stanje, proceni_stanje(stanje))
     else:
-    for s in nova_stanja(stanje):
-    alpha = max(alpha, min_value(s, alpha, beta), key=lambda x: x[1])
-    if alpha[1] >= beta[1]:
+        for s in nova_stanja(stanje):
+            alpha = max(alpha, min_value(s, alpha, beta), key=lambda x: x[1])
+            if alpha[1] >= beta[1]:
                 return beta
-    return alpha'''
-    alpha = max(max(stanje, key=lambda x: x[1]), alpha, key=lambda x: x[1])
+    return alpha
+    '''alpha = max(max(stanje, key=lambda x: x[1]), alpha, key=lambda x: x[1])
     if alpha[1] >= beta[1]:
         return beta
-    return alpha
-def min_value(stanje,  alpha, beta):
-    '''if dubina == 0:
+    return alpha'''
+def min_value(stanje,dubina,  alpha, beta):
+    if dubina == 0:
         return (stanje, proceni_stanje(stanje))
     else:
-    for s in nova_stanja(stanje):
-    beta = min(beta, max_value(s, alpha, beta),key=lambda x: x[1])
-    if beta[1] <= alpha[1]:
+        for s in nova_stanja(stanje):
+            beta = min(beta, max_value(s, alpha, beta),key=lambda x: x[1])
+            if beta[1] <= alpha[1]:
                 return alpha
-    return beta'''    
-    beta = min(min(stanje, key=lambda x: x[1]), beta, key=lambda x: x[1])
+    return beta   
+    '''beta = min(min(stanje, key=lambda x: x[1]), beta, key=lambda x: x[1])
     if beta[1] <= alpha[1]:
         return alpha
-    return beta
+    return beta''' 
 def kraj(stanje):
     ppx1=[]
     ppx2=[]
