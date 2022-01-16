@@ -20,6 +20,7 @@ listaStates=list()
 tabla1=[]
 h={}
 he=[]
+global nes
 def Tabla(n, m ,p1,p2,p3,p4):
     tabla = [ [" "  for i in range(m)] for j in range(n) ]
     '''for i in range(n-1):
@@ -803,20 +804,20 @@ def zidStates(potez,koIgra,stanje):
                 if(i<n-1 and j<m-1 and stanje[i][j+2] != "===" and stanje[i][j] != "===" and stanje[i-1][j+1] != " ǁ " or stanje[i+1][j+1] != " ǁ "):
                     p=[i,j]
                     copy=np.copy(stanje)
-                    stanje[i][j+2] = "==="   
-                    stanje[i][j] = "===" 
-                    if(checkWall(stanje)):
+                    copy[i][j+2] = "==="   
+                    copy[i][j] = "===" 
+                    if(checkWall(copy)):
                         listaStates.append(makeNewState(koIgra,p,"plavi",potez,stanje))
-                    stanje=copy
+                    #stanje=copy
             if j%2==1 and i%2==0:
                 if(i<n-1 and j<m-1  and stanje[i+2][j] != "===" or stanje[i][j] != "===" and stanje[i+1][j-1] != " ǁ " and stanje[i+1][j+1] != " ǁ "):
                     z=[i,j]
                     copy=np.copy(stanje)
-                    stanje[i+2][j] = " ǁ " 
-                    stanje[i][j] = " ǁ "
-                    if(checkWall(stanje)):
+                    copy[i+2][j] = " ǁ " 
+                    copy[i][j] = " ǁ "
+                    if(checkWall(copy)):
                         listaStates.append(makeNewState(koIgra,z,"zeleni",potez,stanje))
-                    stanje=copy
+                    #stanje=copy
 def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
     global pozicije
     global x1
@@ -933,47 +934,60 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
             if(ispis=="po1"):
                 tablaDup[o1[0]][o1[1]]=" O "
             else: tablaDup[o2[0]][o2[1]]=" O "
-    
     return tablaDup
   
 def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
+    global nes
+    nes=np.copy(stanje)
     if kraj(stanje):
         return (potez, 617)
     if (player1):
         igrac = "o" if moj_potez else "x"
     else: 
         igrac = "x" if moj_potez else "o"
-
+    if dubina == 0:
+        return (potez, proceni_stanje(np.copy(stanje),igrac,moj_potez,))
     fja = max_value if moj_potez else min_value
     lp = nova_stanja(stanje,igrac)
-
-    if dubina == 0:
-        return (potez, proceni_stanje(igrac,moj_potez,stanje))
     if lp is None or len(lp) == 0:
+<<<<<<< HEAD
         return (potez, proceni_stanje(igrac,moj_potez,stanje))
     return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina-1,alpha,beta)
+=======
+        return (potez, proceni_stanje(stanje,moj_potez,igrac))
+    return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina,alpha,beta,igrac,moj_potez)
+>>>>>>> 872f095ae23e7aadff85a922c8f428e243f49b2a
 
 def nova_stanja(stanje,igrac):
-    statesOfPlayer(igrac,stanje)
+    statesOfPlayer(igrac,np.copy(stanje))
+    lista=[]
     copy=np.copy(listaStates)
+    #for i in range(0,len(listaStates)):
+        #lista.append(listaStates[i])
     listaStates.clear()
     return copy
-def proceni_stanje(igrac,moj_potez,stanje):
+def proceni_stanje(stanj,igrac,moj_potez):
+    
     return random.randint(0, 617)
     '''pom=[]
     pom1=[]
-    for i in range(n-1):
-        for j in range(m-1):
-            if(i%2==0 and j%2==0):
-                if igrac=="x":
-                    if(stanje[i][j]=="px1"):
+    global nes
+    stanje=np.copy(nes)
+    #printT(stanje)
+    if igrac=="x":
+        for i in range(n-1):
+            for j in range(m-1):
+                if(i%2==0 and j%2==0):
+                    if(stanje[i][j]=='px1'):
                         pom=(i,j)
-                    if(stanje[i][j]=="px2"):
+                    if(stanje[i][j]=='px2'):
                         pom1=(i,j)
-                if igrac=="o":
-                    if(stanje[i][j]=="po1"):
+    if igrac=="o":
+        for i in range(n-1):
+            for j in range(m-1):
+                if(stanje[i][j]=='po1'):
                         pom=(i,j)
-                    if(stanje[i][j]=="po2"):
+                if(stanje[i][j]=='po2'):
                         pom1=(i,j)
     p1=617
     if moj_potez:
@@ -986,12 +1000,19 @@ def proceni_stanje(igrac,moj_potez,stanje):
             p1=max(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
         else:
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
+    #zidovi
+    #nekako
     return p1'''
-def max_value(stanje,dubina, alpha, beta):  
-    if dubina == 0:
-        return (stanje, proceni_stanje(stanje))
-    else:
-        for s in nova_stanja(stanje):
+def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):  
+    '''if dubina == 0:
+        return (stanje, proceni_stanje(stanje,igrac,moj_potez))
+    else:'''
+    #return max(stanje, key=lambda x: x[1])
+    alpha = max(alpha, key=lambda x: x[1])
+    if alpha[1] >= beta[1]:
+                return beta
+    return alpha
+    for s in nova_stanja(stanje,igrac):
             alpha = max(alpha, min_value(s, alpha, beta), key=lambda x: x[1])
             if alpha[1] >= beta[1]:
                 return beta
@@ -1000,11 +1021,16 @@ def max_value(stanje,dubina, alpha, beta):
     if alpha[1] >= beta[1]:
         return beta
     return alpha'''
-def min_value(stanje,dubina,  alpha, beta):
-    if dubina == 0:
-        return (stanje, proceni_stanje(stanje))
-    else:
-        for s in nova_stanja(stanje):
+def min_value(stanje,dubina,  alpha, beta,igrac,moj_potez):
+    '''if dubina == 0:
+        return (stanje, proceni_stanje(stanje,igrac,moj_potez))
+    else:'''
+    #return min(stanje, key=lambda x: x[1])
+    beta = min(beta,key=lambda x: x[1])
+    if beta[1] <= alpha[1]:
+            return alpha
+    return beta   
+    for s in nova_stanja(stanje,igrac):
             beta = min(beta, max_value(s, alpha, beta),key=lambda x: x[1])
             if beta[1] <= alpha[1]:
                 return alpha
@@ -1039,67 +1065,7 @@ def kraj(stanje):
     return False
 def najkraciPut(start,end,stanje):
     return len(findPath(start,end,stanje))-1
-    
-
-def path(start, end):
-    global n
-    global m
-    def h(x):
-        return abs(end[0]-x[0])+abs(end[1]-x[1])
-    found_end = False
-    open_set = set()
-    open_set.add(start)
-    pq = PriorityQueue()
-    pq.put((0, start))
-    closed_set = set()
-    g = {}
-    prev_nodes = {}
-    g[start] = 0
-    prev_nodes[start] = None
-    
-    while len(open_set) > 0 and (not found_end):
-        node = pq.get()[1]
-        
-        if node not in open_set:
-            continue
-        if node == end:
-            found_end = True
-            break
-        for dx, dy in zip([-4, 4, 0, 0, -2, -2, 2, 2], [0, 0, -4, 4, 2, -2, 2, -2]):
-            c = (node[0]+dx, node[1]+dy)
-            if c[0] >= 0 and c[1] >= 0 and c[0] <= n-1 and c[1] <= m-1 and isValid(c,open_set,closed_set,dx,dy):
-                f = g[node] + 1 + h(c)
-                if c not in open_set and c not in closed_set:
-                #if(isValid(c,open_set,closed_set)):
-                    open_set.add(c)
-                    prev_nodes[c] = node
-                    g[c] = g[node] + 1
-                    pq.put((f,c))
-                else:
-                    '''prev_nodes[c] = node
-                    if c in closed_set:
-                        closed_set.remove(c)
-                        open_set.add(c)
-                    pq.put((f,c))'''
-                    #continue
-                    if g[c] > g[node] + 1 :
-                        g[c] = g[node] + 1
-                        prev_nodes[c] = node
-                        if c in closed_set:
-                                closed_set.remove(c)
-                                open_set.add(c)
-                        pq.put((f,c))
-        open_set.remove(node)
-        closed_set.add(node)
-    path = []
-    if found_end:
-        prev = end
-        while prev_nodes[prev] is not None:
-            path.append(prev)
-            prev = prev_nodes[prev]
-        path.append(start)
-        path.reverse()
-    return path
+ 
 def igraj():
     global tabla
     global x1
@@ -1151,7 +1117,7 @@ m=28
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 update()
-minimax(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)
+printT(minimax(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)[0])
 
 '''print(pozicije["px1"])
 print(pozicije["px2"])
