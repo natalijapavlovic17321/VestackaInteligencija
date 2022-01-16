@@ -1267,7 +1267,92 @@ def kraj(stanje):
     return False
 def najkraciPut(start,end,stanje):
     return len(findPath(start,end,stanje))-1
- 
+def findPath2(start, end,stanje):
+    global n
+    global m
+    def h(x):
+        return abs(end[0]-x[0])+abs(end[1]-x[1])
+    found_end = False
+    open_set = set()
+    open_set.add(start)
+    pq = PriorityQueue()
+    pq.put((0, start))
+    closed_set = set()
+    g = {}
+    prev_nodes = {}
+    g[start] = 0
+    prev_nodes[start] = None
+    br=0
+    
+    while len(open_set) > 0 and (not found_end):
+        node = pq.get()[1]
+        
+        if node not in open_set:
+            continue
+        if node == end or (node[0],node[1]-2)==end or (node[0],node[1]+2)==end: #or (node[0]+2,node[1])==end or (node[0]-2,node[1])==end :
+            found_end = True
+            break
+        if(node[0],node[1]-2)==end:
+            br=1
+            found_end = True
+            break
+        if(node[0],node[1]+2)==end:       
+            br=2
+            found_end = True
+            break
+        if (node[0]+2,node[1])==end:
+            br=3
+            found_end = True
+            break
+        if (node[0]-2,node[1])==end:
+            br=4
+            found_end = True
+            break
+        for dx, dy in zip([-4, 4, 0, 0, -2, -2, 2, 2], [0, 0, -4, 4, 2, -2, 2, -2]):
+            c = (node[0]+dx, node[1]+dy)
+            if c[0] >= 0 and c[1] >= 0 and c[0] <= n-1 and c[1] <= m-1 and isValid(c,open_set,closed_set,dx,dy,stanje):
+                f = g[node] + 1 + h(c)
+                if c not in open_set and c not in closed_set:
+                #if(isValid(c,open_set,closed_set)):
+                    open_set.add(c)
+                    prev_nodes[c] = node
+                    g[c] = g[node] + 1
+                    pq.put((f,c))
+                else:
+                    '''prev_nodes[c] = node
+                    if c in closed_set:
+                        closed_set.remove(c)
+                        open_set.add(c)
+                    pq.put((f,c))'''
+                    #continue
+                    if g[c] > g[node] + 1 :
+                        g[c] = g[node] + 1
+                        prev_nodes[c] = node
+                        if c in closed_set:
+                                closed_set.remove(c)
+                                open_set.add(c)
+                        pq.put((f,c))
+        open_set.remove(node)
+        closed_set.add(node)
+    path = []
+    if found_end:
+        print(br)
+        if(br==0):
+            prev = end
+        if(br==1):
+            prev=(end[0],end[1]-2)
+        if(br==2):
+             prev=(end[0],end[1]+2)
+        if(br==3):
+             prev=(end[0]-2,end[1])
+        if(br==4):
+            prev=(end[0]+2,end[1])
+        while prev_nodes[prev] is not None:
+            path.append(prev)
+            prev = prev_nodes[prev]
+        path.append(start)
+        path.reverse()
+    return (path,len(path))
 def igraj():
     global tabla
     global x1
@@ -1333,19 +1418,22 @@ def igraj():
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 update()
+print(findPath2((6,6),(14,20),tabla))
+print(findPath2((6,6),(12,6),tabla))
+print(findPath2((12,6),(6,6),tabla))
+print(findPath2((14,20),(6,6),tabla))
+#print(findPath2((6,6),(14,19),tabla))
+#print(findPath2((6,6),(6,16),tabla))
+#pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),"",None))
 
-pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),"",None))
-
-printT(pom[0])
-print(pom[1])
+#printT(pom[0])
+#print(pom[1])
 
 
 #igraj()
 '''print(pozicije["px1"])
 print(pozicije["px2"])
-print(findPath((6,6),(14,20),tabla))
-print(najkraciPut((6,6),(14,20),tabla))
-#print(najkraciPut((6,6),(6,16)))
+
 #print(o1)
 #print(najkraciPut((6,4),(6,6),tabla))
 #statesOfPlayer("x",tabla)
