@@ -946,17 +946,12 @@ def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
     else: 
         igrac = "x" if moj_potez else "o"
     if dubina == 0:
-        return (potez, proceni_stanje(np.copy(stanje),igrac,moj_potez,))
+        return (potez, proceni_stanje(np.copy(stanje),igrac,moj_potez))
     fja = max_value if moj_potez else min_value
     lp = nova_stanja(stanje,igrac)
     if lp is None or len(lp) == 0:
-<<<<<<< HEAD
-        return (potez, proceni_stanje(igrac,moj_potez,stanje))
-    return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina-1,alpha,beta)
-=======
         return (potez, proceni_stanje(stanje,moj_potez,igrac))
     return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina,alpha,beta,igrac,moj_potez)
->>>>>>> 872f095ae23e7aadff85a922c8f428e243f49b2a
 
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,np.copy(stanje))
@@ -1008,16 +1003,17 @@ def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):
         return (stanje, proceni_stanje(stanje,igrac,moj_potez))
     else:'''
     #return max(stanje, key=lambda x: x[1])
+    
     alpha = max(alpha, key=lambda x: x[1])
     if alpha[1] >= beta[1]:
                 return beta
     return alpha
-    for s in nova_stanja(stanje,igrac):
+    '''for s in nova_stanja(stanje,igrac):
             alpha = max(alpha, min_value(s, alpha, beta), key=lambda x: x[1])
             if alpha[1] >= beta[1]:
                 return beta
     return alpha
-    '''alpha = max(max(stanje, key=lambda x: x[1]), alpha, key=lambda x: x[1])
+    alpha = max(max(stanje, key=lambda x: x[1]), alpha, key=lambda x: x[1])
     if alpha[1] >= beta[1]:
         return beta
     return alpha'''
@@ -1026,19 +1022,64 @@ def min_value(stanje,dubina,  alpha, beta,igrac,moj_potez):
         return (stanje, proceni_stanje(stanje,igrac,moj_potez))
     else:'''
     #return min(stanje, key=lambda x: x[1])
+    
     beta = min(beta,key=lambda x: x[1])
     if beta[1] <= alpha[1]:
             return alpha
     return beta   
-    for s in nova_stanja(stanje,igrac):
+    '''for s in nova_stanja(stanje,igrac):
             beta = min(beta, max_value(s, alpha, beta),key=lambda x: x[1])
             if beta[1] <= alpha[1]:
                 return alpha
     return beta   
-    '''beta = min(min(stanje, key=lambda x: x[1]), beta, key=lambda x: x[1])
+    beta = min(min(stanje, key=lambda x: x[1]), beta, key=lambda x: x[1])
     if beta[1] <= alpha[1]:
         return alpha
     return beta''' 
+def minimax2(stanje,dubina,moj_potez,alpha, beta, potez=None):
+    global nes
+    nes=np.copy(stanje)
+    if kraj(stanje):
+        return (potez, 617)
+    if (player1):
+        igrac = "o" if moj_potez else "x"
+    else: 
+        igrac = "x" if moj_potez else "o"
+    if dubina == 0:
+        return (potez, proceni_stanje(np.copy(stanje),igrac,moj_potez))
+    lp = nova_stanja(stanje,igrac) 
+    if lp is None or len(lp) == 0:
+        return (potez, proceni_stanje(stanje,moj_potez,igrac))
+    if(moj_potez):
+        best = (("lose stanje"), 1000)
+
+        for new_state in lp:
+
+            val = minimax2(new_state, dubina - 1, False, alpha, beta, new_state if potez is None else potez)
+            best = min(best, val, key=lambda x: x[1])
+            beta = min(beta, best, key=lambda x: x[1])
+            if beta[1] <= alpha[1]:
+                break
+        return best
+    else:
+        best = (("lose stanje"), -1000)
+        for new_state in lp:
+            val = minimax2(new_state, dubina - 1,
+                           True, alpha, beta, new_state if potez is None else potez)
+            best = max(best, val, key=lambda x: x[1])
+            alpha = max(alpha, best, key=lambda x: x[1])
+            if beta[1] <= alpha[1]:
+                break
+        return best
+
+def nova_stanja(stanje,igrac):
+    statesOfPlayer(igrac,np.copy(stanje))
+    lista=[]
+    copy=np.copy(listaStates)
+    #for i in range(0,len(listaStates)):
+        #lista.append(listaStates[i])
+    listaStates.clear()
+    return copy
 def kraj(stanje):
     ppx1=[]
     ppx2=[]
@@ -1117,7 +1158,7 @@ m=28
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 update()
-printT(minimax(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)[0])
+printT(minimax2(np.copy(tabla),2,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)[0])
 
 '''print(pozicije["px1"])
 print(pozicije["px2"])
