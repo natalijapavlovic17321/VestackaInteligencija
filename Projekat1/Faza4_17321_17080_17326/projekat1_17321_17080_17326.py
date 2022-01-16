@@ -972,13 +972,11 @@ def nova_stanja(stanje,igrac):
     listaStates.clear()
     return copy
 def proceni_stanje2(stanj,igrac,moj_potez):
-    
     #return random.randint(0, 617)
     pom=[]
     pom1=[]
     global nes
     stanje=np.copy(nes)
-    #printT(stanje)
     pozicijee={"px1": [],
                 "px2": [],
                 "po1": [],
@@ -989,7 +987,6 @@ def proceni_stanje2(stanj,igrac,moj_potez):
     if igrac=="x":
         for i in range(n-1):
             for j in range(m-1):
-                if(i%2==0 and j%2==0):
                     if(stanje[i][j]=='px1'):
                         pom=(i,j)
                     if(stanje[i][j]=='px2'):
@@ -1011,7 +1008,6 @@ def proceni_stanje2(stanj,igrac,moj_potez):
                         pozicijee[stanje[i][j]]=[i,j]
 
     for zid in zidovi:
-      
         if(zid[0]>=min(pozicijee["px1"][0],o1[0]) and zid[0]<=max(pozicijee["px1"][0],o1[0]) and zid[1]>=min(pozicijee["px1"][1],o1[1]) and zid[1]<=max(pozicijee["px1"][1],o1[1])):
             score-=1
         if(zid[0]>=min(pozicijee["px2"][0],o1[0]) and zid[0]<=max(pozicijee["px2"][0],o1[0]) and zid[1]>=min(pozicijee["px2"][1],o1[1]) and zid[1]<=max(pozicijee["px2"][1],o1[1])):
@@ -1030,7 +1026,7 @@ def proceni_stanje2(stanj,igrac,moj_potez):
         if(zid[0]>=min(pozicijee["po2"][0],x2[0]) and zid[0]<=max(pozicijee["po2"][0],x2[0]) and zid[1]>=min(pozicijee["po2"][1],x2[1]) and zid[1]<=max(pozicijee["po2"][1],x2[1])):
             score-=1
     p1=617
-    if moj_potez:
+    if  moj_potez:
         if(igrac=="x"):
             p1=min(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
         else:
@@ -1042,7 +1038,8 @@ def proceni_stanje2(stanj,igrac,moj_potez):
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
     #zidovi
     #nekako
-    print(score)
+    if(p1+score==-5):
+        printT(stanje)
     return p1+score
 def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):  
     '''if dubina == 0:
@@ -1082,7 +1079,7 @@ def min_value(stanje,dubina,  alpha, beta,igrac,moj_potez):
     if beta[1] <= alpha[1]:
         return alpha
     return beta''' 
-def minimax2(stanje,dubina,moj_potez,alpha, beta,prethIgrac, potez=None):
+def minimax2(stanje,dubina,moj_potez,alpha, beta,prethigrac, potez=None):
     global nes
     nes=np.copy(stanje)
     if kraj(stanje):
@@ -1092,13 +1089,12 @@ def minimax2(stanje,dubina,moj_potez,alpha, beta,prethIgrac, potez=None):
     else: 
         igrac = "x" if moj_potez else "o"
     if dubina == 0:
-        return (potez, proceni_stanje2(np.copy(stanje),igrac, not moj_potez))
+        return (potez, proceni_stanje2(np.copy(stanje),prethigrac, not moj_potez))
     lp = nova_stanja(stanje,igrac) 
     if lp is None or len(lp) == 0:
         return (potez, proceni_stanje2(stanje,moj_potez,igrac))
     if(moj_potez):
         best = (("lose stanje"), 1000)
-
         for new_state in lp:
 
             val = minimax2(new_state, dubina - 1, False, alpha, beta, igrac, new_state if potez is None else potez)
@@ -1110,13 +1106,13 @@ def minimax2(stanje,dubina,moj_potez,alpha, beta,prethIgrac, potez=None):
     else:
         best = (("lose stanje"), -1000)
         for new_state in lp:
-            val = minimax2(new_state, dubina - 1,
-                           True, alpha, beta, igrac, new_state if potez is None else potez)
+            val = minimax2(new_state, dubina - 1, True, alpha, beta, igrac, new_state if potez is None else potez)
             best = max(best, val, key=lambda x: x[1])
             alpha = max(alpha, best, key=lambda x: x[1])
             if beta[1] <= alpha[1]:
                 break
         return best
+
 def proceni_stanje(stanj,igrac,moj_potez):
     global nes
     global x1
@@ -1426,8 +1422,15 @@ print(findPath2((14,20),(6,6),tabla))
 #print(findPath2((6,6),(6,16),tabla))
 #pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),"",None))
 
+<<<<<<< HEAD
 #printT(pom[0])
 #print(pom[1])
+=======
+pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),"",None))
+
+printT(pom[0])
+print(pom[1])
+>>>>>>> 8b149b2b656f89952f3d40b2fdc341666ae945e3
 
 
 #igraj()
