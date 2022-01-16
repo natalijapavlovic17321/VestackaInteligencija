@@ -798,6 +798,15 @@ def zidStates(potez,koIgra,stanje):
     global listaStates
     p=[]
     z=[]
+    for i in range(n-1):
+        for j in range(m-1):
+            if(stanje[i][j]=="px1"):
+                ppx1=(i,j)
+    min(ppx1[0],ppo1[0],x1[0],o1[0],ppx2[0],ppo2[0])
+    min(ppx1[1],ppo1[1],x1[1],o1[1],ppx2[1],ppo2[1])
+    max(ppx2[0],ppo2[0],x2[0],o2[0],ppx1[0],ppo1[0])
+    max(ppx2[1],ppo2[1],x2[1],o2[1],ppx1[1],ppo1[1])
+       
     for i in range(n-2):
         for j in range(m-2):
             if i%2==1 and j%2==0:
@@ -934,6 +943,7 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
             if(ispis=="po1"):
                 tablaDup[o1[0]][o1[1]]=" O "
             else: tablaDup[o2[0]][o2[1]]=" O "
+    printT(tablaDup)
     return tablaDup
   
 def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
@@ -963,8 +973,8 @@ def nova_stanja(stanje,igrac):
     return copy
 def proceni_stanje(stanj,igrac,moj_potez):
     
-    return random.randint(0, 617)
-    '''pom=[]
+    #return random.randint(0, 617)
+    pom=[]
     pom1=[]
     global nes
     stanje=np.copy(nes)
@@ -997,7 +1007,7 @@ def proceni_stanje(stanj,igrac,moj_potez):
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
     #zidovi
     #nekako
-    return p1'''
+    return p1
 def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):  
     '''if dubina == 0:
         return (stanje, proceni_stanje(stanje,igrac,moj_potez))
@@ -1119,47 +1129,62 @@ def igraj():
     global xZidovi
     global oZidovi
     global moved 
+    global cijiPotez
+    global player1 
     inputT()
-    tabla=Tabla(n,m,x1,x2,o1,o2)           
+    tabla=Tabla(n,m,x1,x2,o1,o2)  
+    update()       
     while (not endGame()):
         if(player1):
-            rez=minimax(tabla,3,"x",(tabla, 0),(tabla, 617))
-            naj=rez[0]
-            tabla=naj
-            update()
-            if cijiPotez=="o":
-                cijiPotez="x"
-            elif  cijiPotez=="x":
-                cijiPotez="o"
             while(not moved):
                 move()
             moved=False
-            update()
+            #update()i
+            printT(tabla)
             zid()
-            update()
-        else:
-            while(not moved):
-                move()
-                moved=False 
-                update()
-                zid()
-                update()        
-            rez=minimax(tabla,3,"x",(tabla, 0),(tabla, 617))
+            printT(tabla)
+            #update()
+            rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)
             naj=rez[0]
             tabla=naj
-            update()
+            printT(tabla)
+            #update()
             if cijiPotez=="o":
                 cijiPotez="x"
             elif  cijiPotez=="x":
                 cijiPotez="o"
+            
+            #player1=not player1
+        else:
+            rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)
+            naj=rez[0]
+            tabla=naj
+            #update()
+            printT(tabla)
+            if cijiPotez=="o":
+                cijiPotez="x"
+            elif  cijiPotez=="x":
+                cijiPotez="o"
+            while(not moved):
+                move()
+            moved=False 
+            #update()
+            printT(tabla)
+            zid()
+            #update()
+            printT(tabla)        
+            
+            #player1=not player1
 
-n=22
-m=28
-inputT()
+#n=22
+#m=28
+#statesOfPlayer("x",tabla)
+'''inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 update()
-printT(minimax2(np.copy(tabla),2,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)[0])
 
+printT(minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)[0])'''
+igraj()
 '''print(pozicije["px1"])
 print(pozicije["px2"])
 print(findPath((6,6),(14,20),tabla))
