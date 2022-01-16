@@ -951,7 +951,7 @@ def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
         return (potez, proceni_stanje(igrac,moj_potez,stanje))
     if lp is None or len(lp) == 0:
         return (potez, proceni_stanje(igrac,moj_potez,stanje))
-    return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina,alpha,beta)
+    return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina-1,alpha,beta)
 
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,stanje)
