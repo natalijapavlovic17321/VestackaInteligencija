@@ -798,14 +798,14 @@ def zidStates(potez,koIgra,stanje):
     global listaStates
     p=[]
     z=[]
-    for i in range(n-1):
+    '''for i in range(n-1):
         for j in range(m-1):
             if(stanje[i][j]=="px1"):
                 ppx1=(i,j)
     min(ppx1[0],ppo1[0],x1[0],o1[0],ppx2[0],ppo2[0])
     min(ppx1[1],ppo1[1],x1[1],o1[1],ppx2[1],ppo2[1])
     max(ppx2[0],ppo2[0],x2[0],o2[0],ppx1[0],ppo1[0])
-    max(ppx2[1],ppo2[1],x2[1],o2[1],ppx1[1],ppo1[1])
+    max(ppx2[1],ppo2[1],x2[1],o2[1],ppx1[1],ppo1[1])'''
        
     for i in range(n-2):
         for j in range(m-2):
@@ -943,7 +943,7 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
             if(ispis=="po1"):
                 tablaDup[o1[0]][o1[1]]=" O "
             else: tablaDup[o2[0]][o2[1]]=" O "
-    printT(tablaDup)
+    #printT(tablaDup)
     return tablaDup
   
 def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
@@ -971,7 +971,7 @@ def nova_stanja(stanje,igrac):
         #lista.append(listaStates[i])
     listaStates.clear()
     return copy
-def proceni_stanje(stanj,igrac,moj_potez):
+def proceni_stanje2(stanj,igrac,moj_potez):
     
     #return random.randint(0, 617)
     pom=[]
@@ -979,6 +979,13 @@ def proceni_stanje(stanj,igrac,moj_potez):
     global nes
     stanje=np.copy(nes)
     #printT(stanje)
+    pozicijee={"px1": [],
+                "px2": [],
+                "po1": [],
+                "po2": []}
+    figurice=["px1","px2","po1","po2"]
+    zidovi=[]
+    score=0           
     if igrac=="x":
         for i in range(n-1):
             for j in range(m-1):
@@ -987,6 +994,10 @@ def proceni_stanje(stanj,igrac,moj_potez):
                         pom=(i,j)
                     if(stanje[i][j]=='px2'):
                         pom1=(i,j)
+                    if(stanje[i][j]==' ǁ ' or stanje[i][j]=='==='):
+                       zidovi.append([i,j])
+                    if(stanje[i][j] in figurice):
+                        pozicijee[stanje[i][j]]=[i,j]
     if igrac=="o":
         for i in range(n-1):
             for j in range(m-1):
@@ -994,6 +1005,30 @@ def proceni_stanje(stanj,igrac,moj_potez):
                         pom=(i,j)
                 if(stanje[i][j]=='po2'):
                         pom1=(i,j)
+                if(stanje[i][j]==' ǁ ' or stanje[i][j]=='==='):
+                       zidovi.append([i,j])
+                if(stanje[i][j] in figurice):
+                        pozicijee[stanje[i][j]]=[i,j]
+
+    for zid in zidovi:
+      
+        if(zid[0]>=min(pozicijee["px1"][0],o1[0]) and zid[0]<=max(pozicijee["px1"][0],o1[0]) and zid[1]>=min(pozicijee["px1"][1],o1[1]) and zid[1]<=max(pozicijee["px1"][1],o1[1])):
+            score-=1
+        if(zid[0]>=min(pozicijee["px2"][0],o1[0]) and zid[0]<=max(pozicijee["px2"][0],o1[0]) and zid[1]>=min(pozicijee["px2"][1],o1[1]) and zid[1]<=max(pozicijee["px2"][1],o1[1])):
+            score-=1
+        if(zid[0]>=min(pozicijee["px1"][0],o2[0]) and zid[0]<=max(pozicijee["px1"][0],o2[0]) and zid[1]>=min(pozicijee["px1"][1],o2[1]) and zid[1]<=max(pozicijee["px1"][1],o2[1])):
+            score-=1
+        if(zid[0]>=min(pozicijee["px2"][0],o2[0]) and zid[0]<=max(pozicijee["px2"][0],o2[0]) and zid[1]>=min(pozicijee["px2"][1],o2[1]) and zid[1]<=max(pozicijee["px2"][1],o2[1])):
+            score-=1
+
+        if(zid[0]>=min(pozicijee["po1"][0],x1[0]) and zid[0]<=max(pozicijee["po1"][0],x1[0]) and zid[1]>=min(pozicijee["po1"][1],x1[1]) and zid[1]<=max(pozicijee["po1"][1],x1[1])):
+            score-=1
+        if(zid[0]>=min(pozicijee["po2"][0],x1[0]) and zid[0]<=max(pozicijee["po2"][0],x1[0]) and zid[1]>=min(pozicijee["po2"][1],x1[1]) and zid[1]<=max(pozicijee["po2"][1],x1[1])):
+            score-=1
+        if(zid[0]>=min(pozicijee["po1"][0],x2[0]) and zid[0]<=max(pozicijee["po1"][0],x2[0]) and zid[1]>=min(pozicijee["po1"][1],x2[1]) and zid[1]<=max(pozicijee["po1"][1],x2[1])):
+            score-=1
+        if(zid[0]>=min(pozicijee["po2"][0],x2[0]) and zid[0]<=max(pozicijee["po2"][0],x2[0]) and zid[1]>=min(pozicijee["po2"][1],x2[1]) and zid[1]<=max(pozicijee["po2"][1],x2[1])):
+            score-=1
     p1=617
     if moj_potez:
         if(igrac=="x"):
@@ -1007,7 +1042,8 @@ def proceni_stanje(stanj,igrac,moj_potez):
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
     #zidovi
     #nekako
-    return p1
+    print(score)
+    return p1+score
 def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):  
     '''if dubina == 0:
         return (stanje, proceni_stanje(stanje,igrac,moj_potez))
@@ -1046,7 +1082,7 @@ def min_value(stanje,dubina,  alpha, beta,igrac,moj_potez):
     if beta[1] <= alpha[1]:
         return alpha
     return beta''' 
-def minimax2(stanje,dubina,moj_potez,alpha, beta, potez=None):
+def minimax2(stanje,dubina,moj_potez,alpha, beta,prethIgrac, potez=None):
     global nes
     nes=np.copy(stanje)
     if kraj(stanje):
@@ -1056,16 +1092,16 @@ def minimax2(stanje,dubina,moj_potez,alpha, beta, potez=None):
     else: 
         igrac = "x" if moj_potez else "o"
     if dubina == 0:
-        return (potez, proceni_stanje(np.copy(stanje),igrac,moj_potez))
+        return (potez, proceni_stanje2(np.copy(stanje),igrac, not moj_potez))
     lp = nova_stanja(stanje,igrac) 
     if lp is None or len(lp) == 0:
-        return (potez, proceni_stanje(stanje,moj_potez,igrac))
+        return (potez, proceni_stanje2(stanje,moj_potez,igrac))
     if(moj_potez):
         best = (("lose stanje"), 1000)
 
         for new_state in lp:
 
-            val = minimax2(new_state, dubina - 1, False, alpha, beta, new_state if potez is None else potez)
+            val = minimax2(new_state, dubina - 1, False, alpha, beta, igrac, new_state if potez is None else potez)
             best = min(best, val, key=lambda x: x[1])
             beta = min(beta, best, key=lambda x: x[1])
             if beta[1] <= alpha[1]:
@@ -1075,12 +1111,127 @@ def minimax2(stanje,dubina,moj_potez,alpha, beta, potez=None):
         best = (("lose stanje"), -1000)
         for new_state in lp:
             val = minimax2(new_state, dubina - 1,
-                           True, alpha, beta, new_state if potez is None else potez)
+                           True, alpha, beta, igrac, new_state if potez is None else potez)
             best = max(best, val, key=lambda x: x[1])
             alpha = max(alpha, best, key=lambda x: x[1])
             if beta[1] <= alpha[1]:
                 break
         return best
+def proceni_stanje(stanj,igrac,moj_potez):
+    global nes
+    global x1
+    global x2
+    global o1
+    stanje=np.copy(nes)
+    scoreX=0
+    scoreO=0
+    zidovi=[]
+    pozicijee={"px1": [],
+                "px2": [],
+                "po1": [],
+                "po2": []}
+    figurice=["px1","px2","po1","po2"]
+    for i in range(n-2):
+            for j in range(m-2):
+                if(stanje[i][j]==' ǁ ' or stanje[i][j]=='==='):
+                       zidovi.append([i,j])
+                if(stanje[i][j] in figurice):
+                    pozicijee[stanje[i][j]]=[i,j]
+    for zid in zidovi:
+      
+        if(zid[0]>=min(pozicijee["px1"][0],o1[0]) and zid[0]<=max(pozicijee["px1"][0],o1[0]) and zid[1]>=min(pozicijee["px1"][1],o1[1]) and zid[1]<=max(pozicijee["px1"][1],o1[1])):
+            scoreX-=10
+        if(zid[0]>=min(pozicijee["px2"][0],o1[0]) and zid[0]<=max(pozicijee["px2"][0],o1[0]) and zid[1]>=min(pozicijee["px2"][1],o1[1]) and zid[1]<=max(pozicijee["px2"][1],o1[1])):
+            scoreX-=10
+        if(zid[0]>=min(pozicijee["px1"][0],o2[0]) and zid[0]<=max(pozicijee["px1"][0],o2[0]) and zid[1]>=min(pozicijee["px1"][1],o2[1]) and zid[1]<=max(pozicijee["px1"][1],o2[1])):
+            scoreX-=10
+        if(zid[0]>=min(pozicijee["px2"][0],o2[0]) and zid[0]<=max(pozicijee["px2"][0],o2[0]) and zid[1]>=min(pozicijee["px2"][1],o2[1]) and zid[1]<=max(pozicijee["px2"][1],o2[1])):
+            scoreX-=10
+
+        if(zid[0]>=min(pozicijee["po1"][0],x1[0]) and zid[0]<=max(pozicijee["po1"][0],x1[0]) and zid[1]>=min(pozicijee["po1"][1],x1[1]) and zid[1]<=max(pozicijee["po1"][1],x1[1])):
+            scoreO-=10
+        if(zid[0]>=min(pozicijee["po2"][0],x1[0]) and zid[0]<=max(pozicijee["po2"][0],x1[0]) and zid[1]>=min(pozicijee["po2"][1],x1[1]) and zid[1]<=max(pozicijee["po2"][1],x1[1])):
+            scoreO-=10
+        if(zid[0]>=min(pozicijee["po1"][0],x2[0]) and zid[0]<=max(pozicijee["po1"][0],x2[0]) and zid[1]>=min(pozicijee["po1"][1],x2[1]) and zid[1]<=max(pozicijee["po1"][1],x2[1])):
+            scoreO-=10
+        if(zid[0]>=min(pozicijee["po2"][0],x2[0]) and zid[0]<=max(pozicijee["po2"][0],x2[0]) and zid[1]>=min(pozicijee["po2"][1],x2[1]) and zid[1]<=max(pozicijee["po2"][1],x2[1])):
+            scoreO-=10
+
+        putanjaX1=(abs((pozicijee["px1"][0]-o1[0])+(pozicijee["px1"][1]-o1[1])),abs((pozicijee["px1"][0]-o2[0])+(pozicijee["px1"][1]-o2[1])))
+        putanjaX2=(abs((pozicijee["px2"][0]-o1[0])+(pozicijee["px2"][1]-o1[1])),abs((pozicijee["px2"][0]-o2[0])+(pozicijee["px2"][1]-o2[1])))
+        putanjaO1=(abs((pozicijee["po1"][0]-x1[0])+(pozicijee["po1"][1]-x1[1])),abs((pozicijee["po1"][0]-x2[0])+(pozicijee["po1"][1]-x2[1])))
+        putanjaO2=(abs((pozicijee["po2"][0]-x1[0])+(pozicijee["po2"][1]-x1[1])),abs((pozicijee["po2"][0]-x2[0])+(pozicijee["po2"][1]-x2[1])))
+
+        pomMinX1=min(putanjaX1[0],putanjaX2[0])
+        pomMinX2=min(putanjaX1[1],putanjaX2[1])
+        pomMinO1=min(putanjaO1[0],putanjaO2[0])
+        pomMinO2=min(putanjaO1[1],putanjaO2[1])
+
+        if(moj_potez and igrac=="x" or not moj_potez and igrac=="o"):
+                    '''if(pomMinX1==4 or pomMinX1==2):
+                        scoreX-=1000
+                    elif(pomMinX1==6 or pomMinX1==8):
+                        scoreX-=500'''
+                    if(pomMinX1==2 ):
+                        scoreX-=1000
+                    elif(pomMinX1==4 ):
+                        scoreX-=500
+                    else:
+                        scoreX-=pomMinX1
+                    
+                    if(pomMinO1==2):
+                        scoreO+=1000
+                    elif(pomMinO1==4):
+                        scoreO+=500
+                    else:
+                        scoreO+=pomMinO1
+                    
+                    if(pomMinX2==2):
+                        scoreX-=1000
+                    elif(pomMinX2==4 ):
+                        scoreX-=500
+                    else:
+                        scoreX-=pomMinX2
+                
+                    if(pomMinO2==2):
+                        scoreO+=1000
+                    elif(pomMinO2==4 ):
+                        scoreO+=500
+                    else:
+                        scoreO+=pomMinO2
+                    
+        elif(not moj_potez and igrac=="x" or moj_potez and igrac=="o"):
+                    if(pomMinO1==2 ):
+                        scoreO-=1000
+                    elif(pomMinO1==4 ):
+                        scoreO-=500
+                    else:
+                        scoreO-=pomMinO1
+                    if(pomMinX1==2  ):
+                        scoreX+=1000
+                    elif(pomMinX1==4  ):
+                        scoreX+=500
+                    else:
+                        scoreX+=pomMinX1
+            
+                    if(pomMinO2==2 ):
+                        scoreO-=1000
+                    elif(pomMinO2==4  ):
+                        scoreO-=500
+                    else:
+                        scoreO-=pomMinO2
+                    if(pomMinX2==2  ):
+                        scoreX+=1000
+                    elif(pomMinX2==4 ):
+                        scoreX+=500
+                    else:
+                        scoreX+=pomMinX2
+    print(scoreX+scoreO)
+    #if(scoreX+scoreO==):
+    #    printT(stanje)
+    return scoreX+scoreO
+            
+
 
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,np.copy(stanje))
@@ -1179,12 +1330,17 @@ def igraj():
 #n=22
 #m=28
 #statesOfPlayer("x",tabla)
-'''inputT()
+inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 update()
 
-printT(minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)[0])'''
-igraj()
+pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),"",None))
+
+printT(pom[0])
+print(pom[1])
+
+
+#igraj()
 '''print(pozicije["px1"])
 print(pozicije["px2"])
 print(findPath((6,6),(14,20),tabla))
