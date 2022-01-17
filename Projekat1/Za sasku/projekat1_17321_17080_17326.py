@@ -177,7 +177,6 @@ def brojZidova():
             xZidovi=18
         else:
             xZidovi=n/2 -2
-            print(xZidovi)
     oZidovi = xZidovi
     zidoviStatic=xZidovi
 
@@ -930,18 +929,11 @@ def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
         return (potez, proceni_stanje2(stanje,moj_potez,igrac))
     return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina,alpha,beta,igrac,moj_potez)
 
-def nova_stanja(stanje,igrac):
-    statesOfPlayer(igrac,np.copy(stanje))
-    copy=np.copy(listaStates)
-    listaStates.clear()
-    return copy
-
 def proceni_stanje2(stanj,igrac,moj_potez):
     pom=[]
     pom1=[]
     global nes
     stanje=np.copy(nes)
-    printT(stanje)
     pozicijee={"px1": [],
                 "px2": [],
                 "po1": [],
@@ -1028,7 +1020,7 @@ def minimax2(stanje,dubina,moj_potez,alpha, beta,prethigrac, potez=None):
         return (potez, proceni_stanje2(np.copy(stanje),prethigrac, not moj_potez))
     lp = nova_stanja(stanje,igrac) 
     if lp is None or len(lp) == 0:
-        return (potez, proceni_stanje2(stanje,moj_potez,igrac))
+        return (potez, proceni_stanje2(stanje,prethigrac,not moj_potez))
     if(moj_potez):
         best = (("lose stanje"), 1000)
         for new_state in lp:
@@ -1051,7 +1043,6 @@ def minimax2(stanje,dubina,moj_potez,alpha, beta,prethigrac, potez=None):
             
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,np.copy(stanje))
-    print(len(listaStates))
     copy=np.copy(listaStates)
     listaStates.clear()
     return copy
@@ -1249,25 +1240,6 @@ def igraj():
                 cijiPotez="x"
             elif  cijiPotez=="x":
                 cijiPotez="o"     
-
-'''inputT()
-tabla=Tabla(n,m,x1,x2,o1,o2)
-update()
-pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),"",None))
-
-printT(pom[0])
-print(pom[1])
-tabla=pom[0]
-pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),"",None))
-
-printT(pom[0])
-print(pom[1])
-
-tabla=pom[0]
-pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),"",None))
-
-printT(pom[0])
-print(pom[1])'''
 igraj()
 
 
