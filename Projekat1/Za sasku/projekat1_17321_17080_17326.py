@@ -176,8 +176,7 @@ def brojZidova():
         if(n==44):
             xZidovi=18
         else:
-            #xZidovi=n/2 -2
-            xZidovi=1
+            xZidovi=n/2 -2
             print(xZidovi)
     oZidovi = xZidovi
     zidoviStatic=xZidovi
@@ -896,7 +895,12 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
         if(vrstaZida=="zeleni"):
             tablaDup[zid[0]+2][zid[1]] = " ǁ "  
             tablaDup[zid[0]][zid[1]] = " ǁ "
-    if (vrstaZida==""):
+    '''if (vrstaZida==""):
+     for i in range(n-1):
+        for j in range(m-1):
+            if(i%2==0 and j%2==0):
+                if(stanje[i][j]==koIgra):
+                  pom=[i,j]
      if(ispis=="px1" and pom[0]!=x1[0] and pom[1]!=x1[1] and pom[0]!=x2[0] and pom[1]!=x2[1] and pom[0]!=o1[0] and pom[1]!=o1[1] and pom[0]!=o2[0] and pom[1]!=o2[1]):
         tablaDup[x1[0]][x1[1]]=" X "
      else: 
@@ -906,7 +910,7 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
             if(ispis=="po1" and pom[0]!=o1[0] and pom[1]!=o1[1] and pom[0]!=o2[0] and pom[1]!=o2[1] and pom[0]!=x2[0] and pom[1]!=x2[1] and pom[0]!=x1[0]):
                 tablaDup[o1[0]][o1[1]]=" O "
             elif(ispis=="po2" and pom[0]!=o1[0] and pom[1]!=o1[1] and pom[0]!=o2[0] and pom[1]!=o2[1] and pom[0]!=x2[0] and pom[1]!=x2[1] and pom[0]!=x1[0]): 
-                tablaDup[o2[0]][o2[1]]=" O "
+                tablaDup[o2[0]][o2[1]]=" O "'''
     return tablaDup
   
 def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
@@ -937,6 +941,7 @@ def proceni_stanje2(stanj,igrac,moj_potez):
     pom1=[]
     global nes
     stanje=np.copy(nes)
+    printT(stanje)
     pozicijee={"px1": [],
                 "px2": [],
                 "po1": [],
