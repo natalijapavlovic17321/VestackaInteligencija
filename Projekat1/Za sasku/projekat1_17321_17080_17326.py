@@ -23,16 +23,6 @@ he=[]
 global nes
 def Tabla(n, m ,p1,p2,p3,p4):
     tabla = [ [" "  for i in range(m)] for j in range(n) ]
-    '''for i in range(n-1):
-        for j in range(m-1):
-            if(i%2==0 and j%2==0):
-                tabla[i][j]="   "
-            elif i%2==1 and j%2==1:
-                tabla[i][j]="   "
-            if i%2==1 and j%2==0:
-                tabla[i][j]="___"
-            if j%2==1 and i%2==0:
-                tabla[i][j]=" | "'''
     for i in range(n-1):
         for j in range(m):
             if(j<m-1):
@@ -47,7 +37,6 @@ def Tabla(n, m ,p1,p2,p3,p4):
             else: 
                 if(i%2==0):
                     tabla[i][j]= int(i/2)+1
- 
     tabla[p1[0]][p1[1]]=" X "
     tabla[p2[0]][p2[1]]=" X "
     tabla[p3[0]][p3[1]]=" O "
@@ -90,8 +79,7 @@ def inputT():
     n=(int)(input())
     while (n%2 == 0 or n<11 or n>22) and n!=0:
         print("Unesite n da bude neparan broj. Ukoliko ne zelite unesite 0")
-        n=(int)(input())
-        
+        n=(int)(input())  
     if(n == 0):
        n=11
     n=2*n
@@ -127,6 +115,7 @@ def inputT():
     brojZidova()
     XorO()
     Mirror()
+
 def XorO():
     global player1
     pom=random.randint(0, 1)
@@ -136,6 +125,7 @@ def XorO():
     else: 
         print("Korisnik je O. Sacekajte na svoj potez.")
         player1=False
+
 def Mirror():
     global x1
     global x2
@@ -161,18 +151,6 @@ def Mirror():
         pom=x2
         x2=o2
         o2=pom
-    '''if(x2==(14,6) and player1):
-        o2=(14,20)
-    pom1=int(((n-x1[0])-4))
-    pom2=int(((m-x1[1])-4))
-    pom3=int(((n-x2[0])-4))
-    pom4=int(((m-x2[1])-4))
-    if(player1):
-        o1=(pom1,pom2)
-        o2=(pom3,pom4)
-    else:
-        x1=(pom1,pom2)
-        x2=(pom3,pom4)'''
     px1i=[x1[0],x1[1]]
     px2i=[x2[0],x2[1]]
     po1i=[o1[0],o1[1]]
@@ -215,8 +193,7 @@ def plavi():
             
             x, y = [int(i) for i in input().split()]
             x *= 2
-            y *= 2 
-            
+            y *= 2  
         tabla[x-1][y-2] = "==="
         tabla[x-1][y] = "==="   
         if(checkWall(tabla)==False):
@@ -243,10 +220,8 @@ def zeleni():
             x, y = [int(i) for i in input().split()]
             x *= 2
             y *= 2   
-            
         tabla[x-2][y-1] = " ǁ "
         tabla[x][y-1] = " ǁ "
-        
         if(checkWall(tabla)==False):
                 tabla[x-2][y-1] = " | "
                 tabla[x][y-1] = " | "
@@ -254,7 +229,8 @@ def zeleni():
                 zeleni()       
     except ValueError:
         print("Nevalidan unos")
-        zeleni()    
+        zeleni()   
+
 def zid():
     global xZidovi
     global oZidovi
@@ -358,6 +334,7 @@ def move():
         print("Nevalidan unos")
         move()
     return 
+
 def Moving(p, where):
     global tabla
     global pozicije
@@ -450,6 +427,7 @@ def Moving(p, where):
     elif  cijiPotez=="x":
         cijiPotez="o"
     return
+
 def update():
     global tabla
     global pozicije
@@ -478,6 +456,7 @@ def update():
     for line in a:
        print ('  '.join(map(str, line)))
     print ('  '.join(map(str, niz)))
+
 def startPos():
     global tabla
     global x1
@@ -488,6 +467,7 @@ def startPos():
     tabla[x2[0]][x2[1]]=" X "
     tabla[o1[0]][o1[1]]=" O "
     tabla[o2[0]][o2[1]]=" O "
+
 def deleteLast(p):
     global tabla
     global x1
@@ -501,6 +481,7 @@ def deleteLast(p):
     tabla[x2[0]][x2[1]]=" X "
     tabla[o1[0]][o1[1]]=" O "
     tabla[o2[0]][o2[1]]=" O "
+
 def game():
     global tabla
     global x1
@@ -516,19 +497,15 @@ def game():
     inputT()
     tabla=Tabla(n,m,x1,x2,o1,o2)
     update()
-    lista=nova_stanja(tabla,"x")
-    printT(lista[1])
-    #statesOfPlayer("x",np.copy(tabla))
     while (not endGame()):
         print("Korisnik " + cijiPotez +" je na potezu")
-        #zid()
-        #update()
         while(not moved):
             move()
         moved=False
         update()
         zid()
         update()
+
 def main():
     game()
     print("Da li zelite da igrate ponovo?")
@@ -537,6 +514,7 @@ def main():
         game()
         print("Da li zelite da igrate ponovo?")
         p=input()
+
 def findPath(start, end,stanje):
     global n
     global m
@@ -552,10 +530,8 @@ def findPath(start, end,stanje):
     prev_nodes = {}
     g[start] = 0
     prev_nodes[start] = None
-    
     while len(open_set) > 0 and (not found_end):
         node = pq.get()[1]
-        
         if node not in open_set:
             continue
         if node == end:
@@ -566,18 +542,11 @@ def findPath(start, end,stanje):
             if c[0] >= 0 and c[1] >= 0 and c[0] <= n-1 and c[1] <= m-1 and isValid(c,open_set,closed_set,dx,dy,stanje):
                 f = g[node] + 1 + h(c)
                 if c not in open_set and c not in closed_set:
-                #if(isValid(c,open_set,closed_set)):
                     open_set.add(c)
                     prev_nodes[c] = node
                     g[c] = g[node] + 1
                     pq.put((f,c))
                 else:
-                    '''prev_nodes[c] = node
-                    if c in closed_set:
-                        closed_set.remove(c)
-                        open_set.add(c)
-                    pq.put((f,c))'''
-                    #continue
                     if g[c] > g[node] + 1 :
                         g[c] = g[node] + 1
                         prev_nodes[c] = node
@@ -596,32 +565,26 @@ def findPath(start, end,stanje):
         path.append(start)
         path.reverse()
     return path
+
 def isValid(c,open_set,closed_set,dx,dy,stanje):
         global tabla
         global n
         global m
-        
-        #if( c[0]-2<0 or c[0]+2>n-1 or c[1]-2<0 or c[1]+2>m-1 or c[0]-1<0 or c[0]+1>n-1 or c[1]-1<0 or c[1]+1>m-1):
-         #   return False
-    #if( c not in open_set and c not in closed_set):
         if(( c[0]+1>n-1) and dx==2 and dy==0):
             return False
         else:
             if(stanje[c[0]+1][c[1]]=="===" and dx==-2 and dy==0): #u
                 return False
-            
         if(( c[1]+1>m-1) and dx==0 and dy==2):
             return False
         else:
             if(stanje[c[0]][c[1]+1]==" ǁ "and dx==0 and dy==-2):#l
                     return False
-            
         if(( c[0]-1<0 ) and (dx==-2 and dy==0)):
             return False
         else:
             if(stanje[c[0]-1][c[1]]=="==="and dx==2 and dy==0): #d
-                return False
-                
+                return False  
         if(( c[1]-1<0 ) and dx==0 and dy==-2):
             return False
         else:
@@ -664,6 +627,7 @@ def isValid(c,open_set,closed_set,dx,dy,stanje):
                             or (stanje[c[0]-1][c[1]+2]=="===" and stanje[c[0]-2][c[1]+1]==" ǁ ")): # dl
                             return False    
         return True
+
 def checkWall(stanje):
     global pozicije
     global x1
@@ -689,15 +653,6 @@ def checkWall(stanje):
     poz=[ppx1,ppx2,ppo1,ppo2]
     for key in pozicije.keys():
             lista.append(key)
-    '''for l in lista:
-        if(findPath((pozicije[l][0],pozicije[l][1]),x1)==[]):         
-            return False
-        if(findPath((pozicije[l][0],pozicije[l][1]),x2)==[]):
-            return False
-        if(findPath((pozicije[l][0],pozicije[l][1]),o1)==[]):
-            return False
-        if(findPath((pozicije[l][0],pozicije[l][1]),o2)==[]):
-            return False'''
     for s in range(3):
         if(findPath((poz[s][0],poz[s][1]),x1,stanje)==[]):         
                 return False
@@ -708,16 +663,15 @@ def checkWall(stanje):
         if(findPath((poz[s][0],poz[s][1]),o2,stanje)==[]):
                 return False
     return True
+
 def statesOfPlayer(koIgra,stanje):
     if(koIgra=="x"):
         states('px2',stanje)
         states('px1',stanje)
-        #print(len(listaStates))
-        #update()
     else: 
         states('po1',stanje)
         states('po2',stanje)
-        #print(len(listaStates))
+        
 def states(koIgra,stanje):
     global xZidovi
     global oZidovi
@@ -799,6 +753,7 @@ def states(koIgra,stanje):
             zidStates(potez,koIgra,stanje) 
         else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
     return len(listaStates)
+
 def zidStates(potez,koIgra,stanje):
     global n
     global m 
@@ -807,8 +762,6 @@ def zidStates(potez,koIgra,stanje):
     p=[]
     z=[]
     tackaGL=[1,1]
-    tackaGD=[1,1]
-    tackaDL=[1,1]
     tackaDD=[1,1]
     stanje=makeNewState(koIgra,[0,0],"",potez,stanje)
     for i in range(n-1):
@@ -825,11 +778,6 @@ def zidStates(potez,koIgra,stanje):
     tackaGL[1]=min(ppx1[1],ppo1[1],x1[1],o1[1],ppx2[1],ppo2[1])
     tackaDD[0]=max(ppx2[0],ppo2[0],x2[0],o2[0],ppx1[0],ppo1[0])
     tackaDD[1]=max(ppx2[1],ppo2[1],x2[1],o2[1],ppx1[1],ppo1[1])
-    tackaGD[0]=tackaGL[0]
-    tackaGD[1]=tackaDD[1]
-    tackaDL[0]=tackaDD[0]
-    tackaDL[1]=tackaGL[1]
-       
     for i in range(n-2):
         for j in range(m-2):
             if(i>= tackaGL[0] and j>=tackaGL[1] and i<=tackaDD[0] and j<=tackaDD[1]):
@@ -841,7 +789,6 @@ def zidStates(potez,koIgra,stanje):
                     copy[i][j] = "===" 
                     if(checkWall(copy)):
                         listaStates.append(makeNewState(koIgra,p,"plavi",potez,stanje))
-                    #stanje=copy
              if j%2==1 and i%2==0:
                 if(i<n-1 and j<m-1  and stanje[i+2][j] != "===" or stanje[i][j] != "===" and stanje[i+1][j-1] != " ǁ " and stanje[i+1][j+1] != " ǁ "):
                     z=[i,j]
@@ -850,7 +797,7 @@ def zidStates(potez,koIgra,stanje):
                     copy[i][j] = " ǁ "
                     if(checkWall(copy)):
                         listaStates.append(makeNewState(koIgra,z,"zeleni",potez,stanje))
-                    #stanje=copy
+
 def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
     global pozicije
     global x1
@@ -968,23 +915,21 @@ def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
     else: 
         igrac = "x" if moj_potez else "o"
     if dubina == 0:
-        return (potez, proceni_stanje(np.copy(stanje),igrac,moj_potez))
+        return (potez, proceni_stanje2(np.copy(stanje),igrac,moj_potez))
     fja = max_value if moj_potez else min_value
     lp = nova_stanja(stanje,igrac)
     if lp is None or len(lp) == 0:
-        return (potez, proceni_stanje(stanje,moj_potez,igrac))
+        return (potez, proceni_stanje2(stanje,moj_potez,igrac))
     return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina,alpha,beta,igrac,moj_potez)
 
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,np.copy(stanje))
     lista=[]
     copy=np.copy(listaStates)
-    #for i in range(0,len(listaStates)):
-        #lista.append(listaStates[i])
     listaStates.clear()
     return copy
+
 def proceni_stanje2(stanj,igrac,moj_potez):
-    #return random.randint(0, 617)
     pom=[]
     pom1=[]
     global nes
@@ -1018,7 +963,6 @@ def proceni_stanje2(stanj,igrac,moj_potez):
                        zidovi.append([i,j])
                 if(stanje[i][j] in figurice):
                         pozicijee[stanje[i][j]]=[i,j]
-
     for zid in zidovi:
         if(zid[0]>=min(pozicijee["px1"][0],o1[0]) and zid[0]<=max(pozicijee["px1"][0],o1[0]) and zid[1]>=min(pozicijee["px1"][1],o1[1]) and zid[1]<=max(pozicijee["px1"][1],o1[1])):
             score-=1
@@ -1049,18 +993,21 @@ def proceni_stanje2(stanj,igrac,moj_potez):
         else:
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
     return p1+score
+
 def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):  
     #return max(stanje, key=lambda x: x[1])
     alpha = max(alpha, key=lambda x: x[1])
     if alpha[1] >= beta[1]:
                 return beta
     return alpha
+
 def min_value(stanje,dubina,  alpha, beta,igrac,moj_potez):
     #return min(stanje, key=lambda x: x[1])
     beta = min(beta,key=lambda x: x[1])
     if beta[1] <= alpha[1]:
             return alpha
     return beta  
+
 def minimax2(stanje,dubina,moj_potez,alpha, beta,prethigrac, potez=None):
     global nes
     nes=np.copy(stanje)
@@ -1094,126 +1041,14 @@ def minimax2(stanje,dubina,moj_potez,alpha, beta,prethigrac, potez=None):
             if beta[1] <= alpha[1]:
                 break
         return best
-
-def proceni_stanje(stanj,igrac,moj_potez):
-    global nes
-    global x1
-    global x2
-    global o1
-    stanje=np.copy(nes)
-    scoreX=0
-    scoreO=0
-    zidovi=[]
-    pozicijee={"px1": [],
-                "px2": [],
-                "po1": [],
-                "po2": []}
-    figurice=["px1","px2","po1","po2"]
-    for i in range(n-2):
-            for j in range(m-2):
-                if(stanje[i][j]==' ǁ ' or stanje[i][j]=='==='):
-                       zidovi.append([i,j])
-                if(stanje[i][j] in figurice):
-                    pozicijee[stanje[i][j]]=[i,j]
-    for zid in zidovi:
-      
-        if(zid[0]>=min(pozicijee["px1"][0],o1[0]) and zid[0]<=max(pozicijee["px1"][0],o1[0]) and zid[1]>=min(pozicijee["px1"][1],o1[1]) and zid[1]<=max(pozicijee["px1"][1],o1[1])):
-            scoreX-=10
-        if(zid[0]>=min(pozicijee["px2"][0],o1[0]) and zid[0]<=max(pozicijee["px2"][0],o1[0]) and zid[1]>=min(pozicijee["px2"][1],o1[1]) and zid[1]<=max(pozicijee["px2"][1],o1[1])):
-            scoreX-=10
-        if(zid[0]>=min(pozicijee["px1"][0],o2[0]) and zid[0]<=max(pozicijee["px1"][0],o2[0]) and zid[1]>=min(pozicijee["px1"][1],o2[1]) and zid[1]<=max(pozicijee["px1"][1],o2[1])):
-            scoreX-=10
-        if(zid[0]>=min(pozicijee["px2"][0],o2[0]) and zid[0]<=max(pozicijee["px2"][0],o2[0]) and zid[1]>=min(pozicijee["px2"][1],o2[1]) and zid[1]<=max(pozicijee["px2"][1],o2[1])):
-            scoreX-=10
-
-        if(zid[0]>=min(pozicijee["po1"][0],x1[0]) and zid[0]<=max(pozicijee["po1"][0],x1[0]) and zid[1]>=min(pozicijee["po1"][1],x1[1]) and zid[1]<=max(pozicijee["po1"][1],x1[1])):
-            scoreO-=10
-        if(zid[0]>=min(pozicijee["po2"][0],x1[0]) and zid[0]<=max(pozicijee["po2"][0],x1[0]) and zid[1]>=min(pozicijee["po2"][1],x1[1]) and zid[1]<=max(pozicijee["po2"][1],x1[1])):
-            scoreO-=10
-        if(zid[0]>=min(pozicijee["po1"][0],x2[0]) and zid[0]<=max(pozicijee["po1"][0],x2[0]) and zid[1]>=min(pozicijee["po1"][1],x2[1]) and zid[1]<=max(pozicijee["po1"][1],x2[1])):
-            scoreO-=10
-        if(zid[0]>=min(pozicijee["po2"][0],x2[0]) and zid[0]<=max(pozicijee["po2"][0],x2[0]) and zid[1]>=min(pozicijee["po2"][1],x2[1]) and zid[1]<=max(pozicijee["po2"][1],x2[1])):
-            scoreO-=10
-
-        putanjaX1=(abs((pozicijee["px1"][0]-o1[0])+(pozicijee["px1"][1]-o1[1])),abs((pozicijee["px1"][0]-o2[0])+(pozicijee["px1"][1]-o2[1])))
-        putanjaX2=(abs((pozicijee["px2"][0]-o1[0])+(pozicijee["px2"][1]-o1[1])),abs((pozicijee["px2"][0]-o2[0])+(pozicijee["px2"][1]-o2[1])))
-        putanjaO1=(abs((pozicijee["po1"][0]-x1[0])+(pozicijee["po1"][1]-x1[1])),abs((pozicijee["po1"][0]-x2[0])+(pozicijee["po1"][1]-x2[1])))
-        putanjaO2=(abs((pozicijee["po2"][0]-x1[0])+(pozicijee["po2"][1]-x1[1])),abs((pozicijee["po2"][0]-x2[0])+(pozicijee["po2"][1]-x2[1])))
-
-        pomMinX1=min(putanjaX1[0],putanjaX2[0])
-        pomMinX2=min(putanjaX1[1],putanjaX2[1])
-        pomMinO1=min(putanjaO1[0],putanjaO2[0])
-        pomMinO2=min(putanjaO1[1],putanjaO2[1])
-
-        if(moj_potez and igrac=="x" or not moj_potez and igrac=="o"):
-                    '''if(pomMinX1==4 or pomMinX1==2):
-                        scoreX-=1000
-                    elif(pomMinX1==6 or pomMinX1==8):
-                        scoreX-=500'''
-                    if(pomMinX1==2 ):
-                        scoreX-=1000
-                    elif(pomMinX1==4 ):
-                        scoreX-=500
-                    else:
-                        scoreX-=pomMinX1
-                    
-                    if(pomMinO1==2):
-                        scoreO+=1000
-                    elif(pomMinO1==4):
-                        scoreO+=500
-                    else:
-                        scoreO+=pomMinO1
-                    
-                    if(pomMinX2==2):
-                        scoreX-=1000
-                    elif(pomMinX2==4 ):
-                        scoreX-=500
-                    else:
-                        scoreX-=pomMinX2
-                
-                    if(pomMinO2==2):
-                        scoreO+=1000
-                    elif(pomMinO2==4 ):
-                        scoreO+=500
-                    else:
-                        scoreO+=pomMinO2
-                    
-        elif(not moj_potez and igrac=="x" or moj_potez and igrac=="o"):
-                    if(pomMinO1==2 ):
-                        scoreO-=1000
-                    elif(pomMinO1==4 ):
-                        scoreO-=500
-                    else:
-                        scoreO-=pomMinO1
-                    if(pomMinX1==2  ):
-                        scoreX+=1000
-                    elif(pomMinX1==4  ):
-                        scoreX+=500
-                    else:
-                        scoreX+=pomMinX1
-            
-                    if(pomMinO2==2 ):
-                        scoreO-=1000
-                    elif(pomMinO2==4  ):
-                        scoreO-=500
-                    else:
-                        scoreO-=pomMinO2
-                    if(pomMinX2==2  ):
-                        scoreX+=1000
-                    elif(pomMinX2==4 ):
-                        scoreX+=500
-                    else:
-                        scoreX+=pomMinX2
-    return scoreX+scoreO
             
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,np.copy(stanje))
     lista=[]
     copy=np.copy(listaStates)
-    #for i in range(0,len(listaStates)):
-        #lista.append(listaStates[i])
     listaStates.clear()
     return copy
+
 def kraj(stanje):
     ppx1=[]
     ppx2=[]
@@ -1238,8 +1073,10 @@ def kraj(stanje):
     if (ppo1==px1i or ppo1==px2i or ppo2==px1i or ppo2==px2i ):
         return True
     return False
+
 def najkraciPut(start,end,stanje):
     return len(findPath(start,end,stanje))-1
+
 def findPath2(start, end,stanje):
     global n
     global m
@@ -1260,7 +1097,7 @@ def findPath2(start, end,stanje):
         node = pq.get()[1]
         if node not in open_set:
             continue
-        if node == end: #or (node[0]+2,node[1])==end or (node[0]-2,node[1])==end :
+        if node == end: 
             found_end = True
             break
         if(node[0],node[1]-2)==end:
@@ -1284,18 +1121,11 @@ def findPath2(start, end,stanje):
             if c[0] >= 0 and c[1] >= 0 and c[0] <= n-1 and c[1] <= m-1 and isValid(c,open_set,closed_set,dx,dy,stanje):
                 f = g[node] + 1 + h(c)
                 if c not in open_set and c not in closed_set:
-                #if(isValid(c,open_set,closed_set)):
                     open_set.add(c)
                     prev_nodes[c] = node
                     g[c] = g[node] + 1
                     pq.put((f,c))
                 else:
-                    '''prev_nodes[c] = node
-                    if c in closed_set:
-                        closed_set.remove(c)
-                        open_set.add(c)
-                    pq.put((f,c))'''
-                    #continue
                     if g[c] > g[node] + 1 :
                         g[c] = g[node] + 1
                         prev_nodes[c] = node
@@ -1323,12 +1153,14 @@ def findPath2(start, end,stanje):
         path.append(start)
         path.reverse()
     return path
+
 def updatePozcija(koIgra,stanje):
     global pozicije
     for i in range(n-1):
         for j in range(m-1):
                 if(stanje[i][j]==koIgra):
                     pozicije[koIgra]=[i,j]
+                    
 def igraj():
     global tabla
     global x1
@@ -1354,7 +1186,7 @@ def igraj():
             update()
             zid()
             update()
-            rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)
+            rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
             tabla=np.copy(naj)
             if(oZidovi>0):
@@ -1373,7 +1205,7 @@ def igraj():
             elif  cijiPotez=="x":
                 cijiPotez="o"
         else:
-            rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),None)
+            rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
             tabla=np.copy(naj)
             printT(tabla)
@@ -1400,7 +1232,7 @@ def igraj():
             zid()
             update()     
 
-inputT()
+'''inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 update()
 pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),"",None))
@@ -1417,8 +1249,8 @@ tabla=pom[0]
 pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),"",None))
 
 printT(pom[0])
-print(pom[1])
-#igraj()
+print(pom[1])'''
+igraj()
 
 
  

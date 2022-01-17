@@ -1417,28 +1417,11 @@ def igraj():
 inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
 update()
-<<<<<<< HEAD
-#statesOfPlayer('x',tabla)
-#print(len(listaStates))
-=======
-print(findPath2((6,6),(14,20),tabla))
-print(findPath2((6,6),(12,6),tabla))
-print(findPath2((12,6),(6,6),tabla))
-print(findPath2((14,20),(6,6),tabla))
-#print(findPath2((6,6),(14,19),tabla))
-#print(findPath2((6,6),(6,16),tabla))
-#pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), 0),(np.copy(tabla), 617),"",None))
 
-<<<<<<< HEAD
-#printT(pom[0])
-#print(pom[1])
-=======
->>>>>>> 9e3c58ca34697fc09793513b1f1a5f9f413ba93a
 pom=(minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),"",None))
 
 printT(pom[0])
 print(pom[1])
->>>>>>> 8b149b2b656f89952f3d40b2fdc341666ae945e3
 
 
 #igraj()
