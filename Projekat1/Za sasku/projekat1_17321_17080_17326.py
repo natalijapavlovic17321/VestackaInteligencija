@@ -16,6 +16,7 @@ pozicije={}
 cijiPotez="x"
 xZidovi=0
 oZidovi=0
+zidoviStatic=0
 listaStates=list()
 tabla1=[]
 h={}
@@ -164,6 +165,7 @@ def brojZidova():
     global n
     global xZidovi
     global oZidovi
+    global zidoviStatic
     print("Unesite broj zidova koji zelite da koristite tokom partije. (broj mora biti manji od 19 i veci od 8)")
     print("Ukoliko zelite koristiti defaultne vrednosti unesite 0")
     xZidovi=(int)(input())
@@ -174,9 +176,12 @@ def brojZidova():
         if(n==44):
             xZidovi=18
         else:
-            xZidovi=n/2 -2
+            #xZidovi=n/2 -2
+            xZidovi=1
+            print(xZidovi)
     oZidovi = xZidovi
-    
+    zidoviStatic=xZidovi
+
 def plavi():
     global tabla
     global n
@@ -422,10 +427,6 @@ def Moving(p, where):
             pom[0]+=2  
             pom[1]-=2  
     startPos()
-    if cijiPotez=="o":
-        cijiPotez="x"
-    elif  cijiPotez=="x":
-        cijiPotez="o"
     return
 
 def update():
@@ -687,7 +688,10 @@ def states(koIgra,stanje):
             if j%2==1 and i%2==0:
                 if(tabla[i][j]==" ǁ "):
                     zidovi=zidovi+1          
-    zidovi=zidovi-(int)(zidovi/4)
+    z=int(zidovi/4)
+    zidovi=zidovi-z
+    if(z==zidoviStatic):
+        zidovi=0
     pom=[]
     for i in range(n-1):
         for j in range(m-1):
@@ -924,7 +928,6 @@ def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
 
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,np.copy(stanje))
-    lista=[]
     copy=np.copy(listaStates)
     listaStates.clear()
     return copy
@@ -964,7 +967,6 @@ def proceni_stanje2(stanj,igrac,moj_potez):
                 if(stanje[i][j] in figurice):
                         pozicijee[stanje[i][j]]=[i,j]
     for zid in zidovi:
-
         if(zid[0]>=min(pozicijee["px1"][0],x1[0]) and zid[0]<=max(pozicijee["px1"][0],x1[0]) and zid[1]>=min(pozicijee["px1"][1],x1[1]) and zid[1]<=max(pozicijee["px1"][1],x1[1])):
                 score-=1
         if(zid[0]>=min(pozicijee["px2"][0],x1[0]) and zid[0]<=max(pozicijee["px2"][0],x1[0]) and zid[1]>=min(pozicijee["px2"][1],x1[1]) and zid[1]<=max(pozicijee["px2"][1],x1[1])):
@@ -1044,7 +1046,7 @@ def minimax2(stanje,dubina,moj_potez,alpha, beta,prethigrac, potez=None):
             
 def nova_stanja(stanje,igrac):
     statesOfPlayer(igrac,np.copy(stanje))
-    lista=[]
+    print(len(listaStates))
     copy=np.copy(listaStates)
     listaStates.clear()
     return copy
@@ -1160,7 +1162,7 @@ def updatePozcija(koIgra,stanje):
         for j in range(m-1):
                 if(stanje[i][j]==koIgra):
                     pozicije[koIgra]=[i,j]
-                    
+
 def igraj():
     global tabla
     global x1
@@ -1186,7 +1188,13 @@ def igraj():
             update()
             zid()
             update()
-            rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
+            if cijiPotez=="o":
+                cijiPotez="x"
+            elif  cijiPotez=="x":
+                cijiPotez="o"
+            if(oZidovi>0):
+               rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
+            else: rez=minimax2(np.copy(tabla),3,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
             tabla=np.copy(naj)
             if(oZidovi>0):
@@ -1205,7 +1213,9 @@ def igraj():
             elif  cijiPotez=="x":
                 cijiPotez="o"
         else:
-            rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
+            if(xZidovi>0):
+               rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
+            else: rez=minimax2(np.copy(tabla),3,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
             tabla=np.copy(naj)
             printT(tabla)
@@ -1228,9 +1238,12 @@ def igraj():
                 move()
             moved=False 
             update()
-
             zid()
-            update()     
+            update()
+            if cijiPotez=="o":
+                cijiPotez="x"
+            elif  cijiPotez=="x":
+                cijiPotez="o"     
 
 '''inputT()
 tabla=Tabla(n,m,x1,x2,o1,o2)
