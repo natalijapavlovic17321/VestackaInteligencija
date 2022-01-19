@@ -361,9 +361,9 @@ def Moving(p, where):
     if (where=="u"):
         p1=int(pom[0]-4)
         p2=int(pom[0]-2)
-        if([p1,pom[1]] in lista3):
+        if([p2,pom[1]] in lista3):
             tabla[pom[0]][pom[1]]="   "
-            pom[0]-=4  
+            pom[0]-=2  
         elif((tabla[p1][pom[1]] in lista) or (tabla[p2][pom[0]] in lista2)):
             tabla[pom[0]][pom[1]]="   "
             pom[0]-=2
@@ -397,9 +397,9 @@ def Moving(p, where):
     elif (where=="r"):
         p1=int(pom[1]+4)
         p2=int(pom[1]+2)
-        if([pom[0],p1] in lista3):
+        if([pom[0],p2] in lista3):
             tabla[pom[0]][pom[1]]="   "
-            pom[1]+=4  
+            pom[1]+=2  
         elif((tabla[pom[0]][p1] in lista) or (tabla[pom[0]][p2] in lista2)):
             tabla[pom[0]][pom[1]]="   "
             pom[1]+=2
