@@ -1041,8 +1041,6 @@ def proceni_stanje2(stanj,igrac,moj_potez):
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
     #zidovi
     #nekako
-    if(p1+score==-5):
-        printT(stanje)
     return p1+score
 def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):  
     '''if dubina == 0:
