@@ -169,9 +169,9 @@ def brojZidova():
     print("Unesite broj zidova koji zelite da koristite tokom partije. (broj mora biti manji od 19 i veci od 8)")
     print("Ukoliko zelite koristiti defaultne vrednosti unesite 0")
     xZidovi=(int)(input())
-    while xZidovi!=0 and (xZidovi<9 and xZidovi>18):
+    '''while xZidovi!=0 and (xZidovi<9 and xZidovi>18):
         print("Broj zidova mora biti veci od 9(ili 9) i manji od 18 (ili 18)")
-        xZidovi=(int)((int)(input()))
+        xZidovi=(int)((int)(input()))'''
     if(xZidovi == 0):
         if(n==44):
             xZidovi=18
@@ -506,11 +506,13 @@ def game():
         update()
 
 def main():
-    game()
+    #game()
+    igraj()
     print("Da li zelite da igrate ponovo?")
     p=input()
     while ("da" in p) or ("Da" in p) :
-        game()
+        #game()
+        igraj()
         print("Da li zelite da igrate ponovo?")
         p=input()
 
@@ -984,13 +986,26 @@ def proceni_stanje2(stanj,igrac,moj_potez):
     if  moj_potez:
         if(igrac=="x"):
             p1=min(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
+            p2=len(min(findPath(pom,o1,stanje),findPath(pom1,o2,stanje)))-1
         else:
             p1=min(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
+            p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
     else:
         if(igrac=="x"):
             p1=max(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
+            p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
         else:
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
+            p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
+
+    print(p2)
+    if(p1==0 or p1==1):
+        print("p1")
+        print(p1)
+        #p1=-617
+    if(p2==1):
+        p1=-617
+
     return p1+score
 
 def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):  
@@ -1073,7 +1088,7 @@ def kraj(stanje):
     return False
 
 def najkraciPut(start,end,stanje):
-    return len(findPath(start,end,stanje))-1
+    return len(findPath2(start,end,stanje))
 
 def findPath2(start, end,stanje):
     global n
@@ -1188,10 +1203,13 @@ def igraj():
                 cijiPotez="x"
             elif  cijiPotez=="x":
                 cijiPotez="o"
+            if(endGame()):
+                break
             if(oZidovi>0):
                rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             else: rez=minimax2(np.copy(tabla),3,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
+            print(rez[1])
             tabla=np.copy(naj)
             if(oZidovi>0):
                 oZidovi-=1
@@ -1213,6 +1231,7 @@ def igraj():
                rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             else: rez=minimax2(np.copy(tabla),3,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
+            print(rez[1])
             tabla=np.copy(naj)
             printT(tabla)
             if(xZidovi>0):
@@ -1230,6 +1249,8 @@ def igraj():
                 cijiPotez="x"
             elif  cijiPotez=="x":
                 cijiPotez="o"
+            if(endGame()):
+                break
             while(not moved):
                 move()
             moved=False 
