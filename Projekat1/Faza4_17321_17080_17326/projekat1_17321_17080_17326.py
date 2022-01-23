@@ -189,9 +189,9 @@ def brojZidova():
     print("Unesite broj zidova koji zelite da koristite tokom partije. (broj mora biti manji od 19 i veci od 8)")
     print("Ukoliko zelite koristiti defaultne vrednosti unesite 0")
     xZidovi=(int)(input())
-    while xZidovi!=0 and (xZidovi<9 and xZidovi>18):
+    '''while xZidovi!=0 and (xZidovi<9 and xZidovi>18):
         print("Broj zidova mora biti veci od 9(ili 9) i manji od 18 (ili 18)")
-        xZidovi=(int)((int)(input()))
+        xZidovi=(int)((int)(input())'''
     if(xZidovi == 0):
         if(n==22):
             xZidovi=18
@@ -1039,6 +1039,8 @@ def proceni_stanje2(stanj,igrac,moj_potez):
             p1=max(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
         else:
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
+    if(p1==0):
+        p1=-617
     #zidovi
     #nekako
     return p1+score
