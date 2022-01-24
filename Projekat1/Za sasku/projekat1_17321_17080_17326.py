@@ -998,11 +998,6 @@ def proceni_stanje2(stanj,igrac,moj_potez):
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
 
-    print(p2)
-    if(p1==0 or p1==1):
-        print("p1")
-        print(p1)
-        #p1=-617
     if(p2==1):
         p1=-617
 
@@ -1209,7 +1204,7 @@ def igraj():
                rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             else: rez=minimax2(np.copy(tabla),3,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
-            print(rez[1])
+           
             tabla=np.copy(naj)
             if(oZidovi>0):
                 oZidovi-=1
@@ -1231,7 +1226,7 @@ def igraj():
                rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             else: rez=minimax2(np.copy(tabla),3,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
-            print(rez[1])
+           
             tabla=np.copy(naj)
             printT(tabla)
             if(xZidovi>0):
