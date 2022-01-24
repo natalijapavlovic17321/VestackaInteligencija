@@ -1,3 +1,4 @@
+from re import X
 import numpy as np
 import random
 from queue import PriorityQueue
@@ -859,6 +860,7 @@ def makeNewState(koIgra,zid,vrstaZida,potez,stanje):
         if([pom[0],p2] in lista3):
             tablaDup[pom[0]][pom[1]]="   "
             tablaDup[pom[0]][pom[1]-2]=ispis
+            
         elif((tablaDup[pom[0]][p1] in lista) or (tablaDup[pom[0]][p2] in lista2)):
             tablaDup[pom[0]][pom[1]]="   "
             tablaDup[pom[0]][pom[1]-2]=ispis
@@ -932,9 +934,13 @@ def minimax(stanje,dubina,moj_potez,alpha, beta, potez=None):
     return fja(([minimax(x, dubina - 1, not moj_potez,alpha,beta, x if potez is None else potez) for x in lp]),dubina,alpha,beta,igrac,moj_potez)
 
 def proceni_stanje2(stanj,igrac,moj_potez):
-    pom=[]
-    pom1=[]
+    pom=()
+    pom1=()
     global nes
+    global x1
+    global x2
+    global o1
+    global o2
     stanje=np.copy(nes)
     pozicijee={"px1": [],
                 "px2": [],
@@ -989,31 +995,28 @@ def proceni_stanje2(stanj,igrac,moj_potez):
         if(igrac=="x"):
             if(pom==o1 or pom==o2 or pom1==o1 or pom1==o2):
                 print("ovde")
-                return -617
+                return -616
             p1=min(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
             p2=len(min(findPath(pom,o1,stanje),findPath(pom1,o2,stanje)))-1
         else:
             if(pom==x1 or pom==x2 or pom1==x1 or pom1==x2):
                 print("ovde")
-                return -617
+                return -616
             p1=min(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
     else:
         if(igrac=="x"):
             if(pom==o1 or pom==o2 or pom1==o1 or pom1==o2):
                 print("ovde")
-                return -617
+                return -616
             p1=max(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
         else:
             if(pom==x1 or pom==x2 or pom1==x1 or pom1==x2):
                 print("ovde")
-                return -617
+                return -616
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
-
-    if(p2==1):
-        p1=-617
 
     return p1+score
 
@@ -1271,7 +1274,6 @@ def igraj():
             elif  cijiPotez=="x":
                 cijiPotez="o"     
 igraj()
-
 
  
 
