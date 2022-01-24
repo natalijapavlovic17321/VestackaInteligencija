@@ -966,35 +966,49 @@ def proceni_stanje2(stanj,igrac,moj_potez):
                 if(stanje[i][j] in figurice):
                         pozicijee[stanje[i][j]]=[i,j]
     for zid in zidovi:
-        if(zid[0]>=min(pozicijee["px1"][0],x1[0]) and zid[0]<=max(pozicijee["px1"][0],x1[0]) and zid[1]>=min(pozicijee["px1"][1],x1[1]) and zid[1]<=max(pozicijee["px1"][1],x1[1])):
+        if(igrac=="x"):
+            if(zid[0]>=min(pozicijee["px1"][0],x1[0]) and zid[0]<=max(pozicijee["px1"][0],x1[0]) and zid[1]>=min(pozicijee["px1"][1],x1[1]) and zid[1]<=max(pozicijee["px1"][1],x1[1])):
+                    score-=1
+            if(zid[0]>=min(pozicijee["px2"][0],x1[0]) and zid[0]<=max(pozicijee["px2"][0],x1[0]) and zid[1]>=min(pozicijee["px2"][1],x1[1]) and zid[1]<=max(pozicijee["px2"][1],x1[1])):
+                    score-=1
+            if(zid[0]>=min(pozicijee["px1"][0],x2[0]) and zid[0]<=max(pozicijee["px1"][0],x2[0]) and zid[1]>=min(pozicijee["px1"][1],x2[1]) and zid[1]<=max(pozicijee["px1"][1],x2[1])):
+                    score-=1
+            if(zid[0]>=min(pozicijee["px2"][0],x2[0]) and zid[0]<=max(pozicijee["px2"][0],x2[0]) and zid[1]>=min(pozicijee["px2"][1],x2[1]) and zid[1]<=max(pozicijee["px2"][1],x2[1])):
+                    score-=1
+        else:
+            if(zid[0]>=min(pozicijee["po1"][0],o1[0]) and zid[0]<=max(pozicijee["po1"][0],o1[0]) and zid[1]>=min(pozicijee["po1"][1],o1[1]) and zid[1]<=max(pozicijee["po1"][1],o1[1])):
                 score-=1
-        if(zid[0]>=min(pozicijee["px2"][0],x1[0]) and zid[0]<=max(pozicijee["px2"][0],x1[0]) and zid[1]>=min(pozicijee["px2"][1],x1[1]) and zid[1]<=max(pozicijee["px2"][1],x1[1])):
-                score-=1
-        if(zid[0]>=min(pozicijee["px1"][0],x2[0]) and zid[0]<=max(pozicijee["px1"][0],x2[0]) and zid[1]>=min(pozicijee["px1"][1],x2[1]) and zid[1]<=max(pozicijee["px1"][1],x2[1])):
-                score-=1
-        if(zid[0]>=min(pozicijee["px2"][0],x2[0]) and zid[0]<=max(pozicijee["px2"][0],x2[0]) and zid[1]>=min(pozicijee["px2"][1],x2[1]) and zid[1]<=max(pozicijee["px2"][1],x2[1])):
-                score-=1
-        if(zid[0]>=min(pozicijee["po1"][0],o1[0]) and zid[0]<=max(pozicijee["po1"][0],o1[0]) and zid[1]>=min(pozicijee["po1"][1],o1[1]) and zid[1]<=max(pozicijee["po1"][1],o1[1])):
-                score-=1
-        if(zid[0]>=min(pozicijee["po2"][0],o1[0]) and zid[0]<=max(pozicijee["po2"][0],o1[0]) and zid[1]>=min(pozicijee["po2"][1],o1[1]) and zid[1]<=max(pozicijee["po2"][1],o1[1])):
-                score-=1
-        if(zid[0]>=min(pozicijee["po1"][0],o2[0]) and zid[0]<=max(pozicijee["po1"][0],o2[0]) and zid[1]>=min(pozicijee["po1"][1],o2[1]) and zid[1]<=max(pozicijee["po1"][1],o2[1])):
-                score-=1
-        if(zid[0]>=min(pozicijee["po2"][0],o2[0]) and zid[0]<=max(pozicijee["po2"][0],o2[0]) and zid[1]>=min(pozicijee["po2"][1],o2[1]) and zid[1]<=max(pozicijee["po2"][1],o2[1])):
-                score-=1
+            if(zid[0]>=min(pozicijee["po2"][0],o1[0]) and zid[0]<=max(pozicijee["po2"][0],o1[0]) and zid[1]>=min(pozicijee["po2"][1],o1[1]) and zid[1]<=max(pozicijee["po2"][1],o1[1])):
+                    score-=1
+            if(zid[0]>=min(pozicijee["po1"][0],o2[0]) and zid[0]<=max(pozicijee["po1"][0],o2[0]) and zid[1]>=min(pozicijee["po1"][1],o2[1]) and zid[1]<=max(pozicijee["po1"][1],o2[1])):
+                    score-=1
+            if(zid[0]>=min(pozicijee["po2"][0],o2[0]) and zid[0]<=max(pozicijee["po2"][0],o2[0]) and zid[1]>=min(pozicijee["po2"][1],o2[1]) and zid[1]<=max(pozicijee["po2"][1],o2[1])):
+                    score-=1
     p1=617
     if  moj_potez:
         if(igrac=="x"):
+            if(pom==o1 or pom==o2 or pom1==o1 or pom1==o2):
+                print("ovde")
+                return -617
             p1=min(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
             p2=len(min(findPath(pom,o1,stanje),findPath(pom1,o2,stanje)))-1
         else:
+            if(pom==x1 or pom==x2 or pom1==x1 or pom1==x2):
+                print("ovde")
+                return -617
             p1=min(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
     else:
         if(igrac=="x"):
+            if(pom==o1 or pom==o2 or pom1==o1 or pom1==o2):
+                print("ovde")
+                return -617
             p1=max(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
         else:
+            if(pom==x1 or pom==x2 or pom1==x1 or pom1==x2):
+                print("ovde")
+                return -617
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
 
