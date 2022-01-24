@@ -19,9 +19,6 @@ xZidovi=0
 oZidovi=0
 zidoviStatic=0
 listaStates=list()
-tabla1=[]
-h={}
-he=[]
 global nes
 def Tabla(n, m ,p1,p2,p3,p4):
     tabla = [ [" "  for i in range(m)] for j in range(n) ]
@@ -700,7 +697,7 @@ def states(koIgra,stanje):
                if(stanje[i][j]==koIgra):
                   pom=[i,j]
     global listaStates
-    if(pom[0]!=0 and pom[0]!=2 and pom[0]!=1 and stanje[pom[0]-3][pom[1]]!="===" and stanje[pom[0]-1][pom[1]]!="===" ): #u
+    '''if(pom[0]!=0 and pom[0]!=2 and pom[0]!=1 and stanje[pom[0]-3][pom[1]]!="===" and stanje[pom[0]-1][pom[1]]!="===" ): #u
         potez="u" #koji je potez
         if(zidovi>0):
             zidStates(potez,koIgra,stanje)
@@ -710,13 +707,13 @@ def states(koIgra,stanje):
         potez="d"
         if(zidovi>0):
             zidStates(potez,koIgra,stanje)
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))'''
     if(pom[1]!=0 and pom[1]!=2 and pom[1]!=1 and stanje[pom[0]][pom[1]-3]!=" ǁ " and stanje[pom[0]][pom[1]-1]!=" ǁ " ): #l
         potez="l"
         if(zidovi>0):
             zidStates(potez,koIgra,stanje)
         else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
-    if(pom[1]!=m-2 and pom[1]!=m-4 and stanje[pom[0]][pom[1]+3]!=" ǁ " and stanje[pom[0]][pom[1]+1]!=" ǁ " ): #r
+    '''if(pom[1]!=m-2 and pom[1]!=m-4 and stanje[pom[0]][pom[1]+3]!=" ǁ " and stanje[pom[0]][pom[1]+1]!=" ǁ " ): #r
         potez="r"
         if(zidovi>0):
             zidStates(potez,koIgra,stanje)
@@ -756,8 +753,9 @@ def states(koIgra,stanje):
         potez="dl"
         if(zidovi>0):
             zidStates(potez,koIgra,stanje) 
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
-    return len(listaStates)
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))'''
+    #return len(listaStates)
+    return listaStates
 
 def zidStates(potez,koIgra,stanje):
     global n
@@ -992,33 +990,31 @@ def proceni_stanje2(stanj,igrac,moj_potez):
                     score-=1
     p1=617
     if  moj_potez:
+        
         if(igrac=="x"):
-            if(pom==o1 or pom==o2 or pom1==o1 or pom1==o2):
-                print("ovde")
+            if((pom[0]==o1[0] and pom[1]==o1[1]) or (pom[0]==o2[0] and pom[1]==o2[1]) or (pom1[0]==o1[0]  and pom1[1]==o1[1]) or (pom1[0]==o2[0] and pom1[1]==o2[1])):
                 return -616
             p1=min(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
             p2=len(min(findPath(pom,o1,stanje),findPath(pom1,o2,stanje)))-1
         else:
-            if(pom==x1 or pom==x2 or pom1==x1 or pom1==x2):
-                print("ovde")
+            if((pom[0]==x1[0] and pom[1]==x1[1]) or (pom[0]==x2[0] and pom[1]==x2[1]) or (pom1[0]==x1[0]  and pom1[1]==x1[1]) or (pom1[0]==x2[0] and pom1[1]==x2[1])):
                 return -616
             p1=min(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
     else:
         if(igrac=="x"):
-            if(pom==o1 or pom==o2 or pom1==o1 or pom1==o2):
-                print("ovde")
+            if((pom[0]==o1[0] and pom[1]==o1[1]) or (pom[0]==o2[0] and pom[1]==o2[1]) or (pom1[0]==o1[0]  and pom1[1]==o1[1]) or (pom1[0]==o2[0] and pom1[1]==o2[1])):
                 return -616
             p1=max(najkraciPut(pom,o1,stanje),najkraciPut(pom1,o2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
         else:
-            if(pom==x1 or pom==x2 or pom1==x1 or pom1==x2):
-                print("ovde")
+            if((pom[0]==x1[0] and pom[1]==x1[1]) or (pom[0]==x2[0] and pom[1]==x2[1]) or (pom1[0]==x1[0]  and pom1[1]==x1[1]) or (pom1[0]==x2[0] and pom1[1]==x2[1])):
                 return -616
             p1=max(najkraciPut(pom,x1,stanje),najkraciPut(pom1,x2,stanje))
             p2=len(min(findPath(pom,x1,stanje),findPath(pom1,x2,stanje)))-1
-
-    return p1+score
+    oduz=0
+    
+    return 5*p1+score
 
 def max_value(stanje,dubina, alpha, beta,igrac,moj_potez):  
     #return max(stanje, key=lambda x: x[1])
@@ -1274,6 +1270,7 @@ def igraj():
             elif  cijiPotez=="x":
                 cijiPotez="o"     
 igraj()
+
 
  
 
