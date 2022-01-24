@@ -76,7 +76,7 @@ def inputT():
     global o2
     print("Unesite n da bude neparan broj. Ukoliko ne zelite unesite 0")
     n=(int)(input())
-    while (n%2 == 0 or n<11 or n>22) and n!=0:
+    while (n%2 == 0 ) and n!=0:
         print("Unesite n da bude neparan broj. Ukoliko ne zelite unesite 0")
         n=(int)(input())  
     if(n == 0):
@@ -84,7 +84,7 @@ def inputT():
     n=2*n
     print("Unesite m da bude paran broj. Ukoliko ne zelite unesite 0")
     m=(int)(input())
-    while (m%2!=0 or m<14 or m>28) and m!=0:
+    while (m%2!=0 ) and m!=0:
         print("Unesite m da bude paran broj. Ukoliko ne zelite unesite 0")
         m=(int)((int)(input()))
     if(m == 0):
@@ -652,7 +652,7 @@ def checkWall(stanje):
     poz=[ppx1,ppx2,ppo1,ppo2]
     for key in pozicije.keys():
             lista.append(key)
-    for s in range(3):
+    for s in range(4):
         if(findPath((poz[s][0],poz[s][1]),x1,stanje)==[]):         
                 return False
         if(findPath((poz[s][0],poz[s][1]),x2,stanje)==[]):
