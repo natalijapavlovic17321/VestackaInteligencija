@@ -697,7 +697,7 @@ def states(koIgra,stanje):
                if(stanje[i][j]==koIgra):
                   pom=[i,j]
     global listaStates
-    '''if(pom[0]!=0 and pom[0]!=2 and pom[0]!=1 and stanje[pom[0]-3][pom[1]]!="===" and stanje[pom[0]-1][pom[1]]!="===" ): #u
+    if(pom[0]!=0 and pom[0]!=2 and pom[0]!=1 and stanje[pom[0]-3][pom[1]]!="===" and stanje[pom[0]-1][pom[1]]!="===" ): #u
         potez="u" #koji je potez
         if(zidovi>0):
             zidStates(potez,koIgra,stanje)
@@ -707,13 +707,13 @@ def states(koIgra,stanje):
         potez="d"
         if(zidovi>0):
             zidStates(potez,koIgra,stanje)
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))'''
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
     if(pom[1]!=0 and pom[1]!=2 and pom[1]!=1 and stanje[pom[0]][pom[1]-3]!=" ǁ " and stanje[pom[0]][pom[1]-1]!=" ǁ " ): #l
         potez="l"
         if(zidovi>0):
             zidStates(potez,koIgra,stanje)
         else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
-    '''if(pom[1]!=m-2 and pom[1]!=m-4 and stanje[pom[0]][pom[1]+3]!=" ǁ " and stanje[pom[0]][pom[1]+1]!=" ǁ " ): #r
+    if(pom[1]!=m-2 and pom[1]!=m-4 and stanje[pom[0]][pom[1]+3]!=" ǁ " and stanje[pom[0]][pom[1]+1]!=" ǁ " ): #r
         potez="r"
         if(zidovi>0):
             zidStates(potez,koIgra,stanje)
@@ -753,7 +753,7 @@ def states(koIgra,stanje):
         potez="dl"
         if(zidovi>0):
             zidStates(potez,koIgra,stanje) 
-        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))'''
+        else: listaStates.append(makeNewState(koIgra,[0,0],"",potez,stanje))
     #return len(listaStates)
     return listaStates
 
@@ -1217,7 +1217,6 @@ def igraj():
                rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             else: rez=minimax2(np.copy(tabla),3,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
-           
             tabla=np.copy(naj)
             if(oZidovi>0):
                 oZidovi-=1
@@ -1239,9 +1238,8 @@ def igraj():
                rez=minimax2(np.copy(tabla),1,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             else: rez=minimax2(np.copy(tabla),3,True,(np.copy(tabla), -617),(np.copy(tabla), 617),None)
             naj=rez[0]
-           
             tabla=np.copy(naj)
-            printT(tabla)
+            #printT(tabla)
             if(xZidovi>0):
                 xZidovi-=1
             if(tabla[pozicije["px1"][0]][pozicije["px1"][1]]!="px1"):
