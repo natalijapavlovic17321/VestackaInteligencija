@@ -1,2 +1,2 @@
 # VestackaInteligencija
-VI projekat
+Blockade game
